@@ -4,8 +4,8 @@ import view.pnl.BasePanelImpl;
 
 import java.awt.*;
 
-public class MenuPanel extends BasePanelImpl {
-    public MenuPanel() {
+public class CtlPanel extends BasePanelImpl {
+    public CtlPanel() {
         init();
     }
 

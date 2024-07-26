@@ -12,7 +12,6 @@ public class AppPanel extends BasePanelImpl {
     private void init() {
         setLayout(null);
         setBackground(Color.YELLOW);
-        setLocation(350, 190);
         setBounds(10, 190, 330, 810);
     }
 }
