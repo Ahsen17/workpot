@@ -7,17 +7,17 @@ import view.pnl.BasePanelImpl;
 import javax.swing.*;
 import java.awt.*;
 
-public class AppPanel extends BasePanelImpl {
-    public AppPanel() {
+public class MgrPanel extends BasePanelImpl {
+    public MgrPanel() {
         init();
     }
 
-    private void init() {}
+    public void init() {}
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        ImageIcon exePanelBg = new ImageIcon(ImageConstantPath.PanelBgPath + "/" + "AppPanel" + "." + FileCharacters.ImageSuffix);
+        ImageIcon exePanelBg = new ImageIcon(ImageConstantPath.PanelBgPath + "/" + "MgrPanel" + "." + FileCharacters.ImageSuffix);
         exePanelBg.paintIcon(this, g, 0, 0);
     }
 }

@@ -1,7 +1,6 @@
 package view.pnl;
 
 import view.lbl.DatetimeLabel;
-import view.pnl.interfaces.BasePanel;
 import view.pnl.layout.*;
 import view.pnl.tools.PanelRegistry;
 
@@ -26,7 +25,7 @@ public class PanelMgr {
     }
 
     private void registerExeLayout() {
-        BasePanelImpl exeP = new ExePanel();
+        ExePanel exeP = new ExePanel();
 
         exeP.setBackground(Color.CYAN);
         exeP.setBounds(10, 10, 1775, 170);
@@ -35,7 +34,7 @@ public class PanelMgr {
     }
 
     private void registerAppLayout() {
-        BasePanelImpl appP = new AppPanel();
+        AppPanel appP = new AppPanel();
 
         appP.setBackground(Color.YELLOW);
         appP.setBounds(10, 190, 330, 810);
@@ -44,22 +43,18 @@ public class PanelMgr {
     }
 
     private void registerWebMgrLayout() {
-        BasePanelImpl webMgrP = new WebMgrPanel();
-        BasePanelImpl webOprP = new WebOprPanel();
-        webMgrP.add(webOprP);
+        MgrPanel webMgrP = new MgrPanel();
 
         webMgrP.setBackground(Color.ORANGE);
-        webOprP.setBackground(Color.GREEN);
         webMgrP.setBounds(350, 190, 1435, 810);
-        webOprP.setBounds(0, 40, 1435, 770);
 
         layoutRegistry.registry("WebMgrPanel", webMgrP);
     }
 
     private void registerCtlLayout() {
-        BasePanelImpl ctlP = new CtlPanel();
+        CtlPanel ctlP = new CtlPanel();
         DatetimeLabel timerL = new DatetimeLabel();
-        ctlP.add(timerL);
+        ctlP.setTimer(timerL);
 
         ctlP.setBackground(Color.PINK);
         ctlP.setBounds(10,1010,1775,40);

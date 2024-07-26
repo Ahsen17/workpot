@@ -1,8 +1,10 @@
 package view.pnl.layout;
 
+import common.FileCharacters;
+import common.ImageConstantPath;
 import view.pnl.BasePanelImpl;
-import view.pnl.MainPanel;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class ExePanel extends BasePanelImpl {
@@ -10,9 +12,12 @@ public class ExePanel extends BasePanelImpl {
         init();
     }
 
-    private void init() {
-        setLayout(null);
-        setBackground(Color.CYAN);
-        setBounds(10, 10, 1775, 170);
+    private void init() {}
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        ImageIcon exePanelBg = new ImageIcon(ImageConstantPath.PanelBgPath + "/" + "ExePanel" + "." + FileCharacters.ImageSuffix);
+        exePanelBg.paintIcon(this, g, 0, 0);
     }
 }
