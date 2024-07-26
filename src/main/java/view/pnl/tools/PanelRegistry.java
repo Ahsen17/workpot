@@ -1,6 +1,6 @@
 package view.pnl.tools;
 
-import view.pnl.BasePanel;
+import view.pnl.interfaces.BasePanel;
 
 import java.util.HashMap;
 

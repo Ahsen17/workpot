@@ -1,17 +1,14 @@
 package view.pnl;
 
-import view.frm.BaseFrameImpl;
-import view.pnl.BasePanelImpl;
+import view.pnl.layout.*;
 import view.pnl.tools.PanelRegistry;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
-import java.util.Map;
 
 public class MainPanel extends BasePanelImpl {
-    private final static PanelRegistry<JPanel> layoutPnlRegistry = new PanelRegistry<JPanel>();
-    private final static PanelRegistry<JPanel> modulePanelRegistry = new PanelRegistry<JPanel>();
+    private final static PanelRegistry<JPanel> modulePanelRegister = new PanelRegistry<JPanel>();
 
     public MainPanel() {
         init();
@@ -31,12 +28,22 @@ public class MainPanel extends BasePanelImpl {
     }
 
     private void initLayout() {
-        HashMap<String, JPanel> panels = layoutPnlRegistry.panels();
         // TODO: init main panel layout
+        add(new ExePanel());
+        add(new AppPanel());
+
+        WebMgrPanel opr = new WebMgrPanel();
+        opr.add(new WebOprPanel());
+        add(opr);
+        add(new MenuPanel());
     }
 
     private void initModules() {
-        HashMap<String, JPanel> panels = modulePanelRegistry.panels();
+        HashMap<String, JPanel> panels = modulePanelRegister.panels();
         // TODO: init main panel modules
+    }
+
+    public static void registryModule(String pnlName, JPanel module) {
+        modulePanelRegister.registry(pnlName, module);
     }
 }

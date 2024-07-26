@@ -1,4 +1,4 @@
-package view.pnl;
+package view.pnl.interfaces;
 
 public interface BasePanel {
 
