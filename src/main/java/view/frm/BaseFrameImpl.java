@@ -67,12 +67,14 @@ public class BaseFrameImpl extends JFrame implements BaseFrame {
     public void updateFrameSizePix(int width, int height) {
         this.width = width;
         this.height = height;
+        this.frameSizeController = true;
         resize();
     }
 
     public void updateFrameSizePct(float widthPercent, float heightPercent) {
         this.widthPercent = widthPercent;
         this.heightPercent = heightPercent;
+        this.frameSizeController = false;
         resize();
     }
 
