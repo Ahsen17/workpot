@@ -1,19 +1,21 @@
-package view.pnl;
+package view.pnl.manager;
 
 import view.lbl.DatetimeLabel;
+import view.pnl.BasePanelImpl;
 import view.pnl.layout.*;
 import view.pnl.tools.PanelRegistry;
 
 import java.awt.*;
 
-public class PanelMgr {
-    private final PanelRegistry<BasePanelImpl> layoutRegistry = new PanelRegistry<>();
-    private final PanelRegistry<BasePanelImpl> appRegistry = new PanelRegistry<>();
+public class LayoutMgr {
+    private final PanelRegistry<BasePanelImpl> registry = new PanelRegistry<>();
 
-    public PanelMgr() {
+    public LayoutMgr() {
+        init();
+    }
+
+    private void init() {
         registerLayouts();
-        registerApps();
-
         initGeneralCharacters();
     }
 
@@ -30,7 +32,7 @@ public class PanelMgr {
         exeP.setBackground(Color.CYAN);
         exeP.setBounds(10, 10, 1775, 170);
 
-        layoutRegistry.registry("ExePanel", exeP);
+        registry.register("ExePanel", exeP);
     }
 
     private void registerAppLayout() {
@@ -39,7 +41,7 @@ public class PanelMgr {
         appP.setBackground(Color.YELLOW);
         appP.setBounds(10, 190, 330, 810);
 
-        layoutRegistry.registry("AppPanel", appP);
+        registry.register("AppPanel", appP);
     }
 
     private void registerWebMgrLayout() {
@@ -48,7 +50,7 @@ public class PanelMgr {
         webMgrP.setBackground(Color.ORANGE);
         webMgrP.setBounds(350, 190, 1435, 810);
 
-        layoutRegistry.registry("WebMgrPanel", webMgrP);
+        registry.register("WebMgrPanel", webMgrP);
     }
 
     private void registerCtlLayout() {
@@ -61,28 +63,16 @@ public class PanelMgr {
 
         timerL.setBounds(1364,5,236,30);
 
-        layoutRegistry.registry("CtlPanel", ctlP);
-    }
-
-    private void registerApps() {
-
+        registry.register("CtlPanel", ctlP);
     }
 
     private void initGeneralCharacters() {
-        layoutRegistry.panels().forEach((name, panel) -> {
+        registry.panels().forEach((name, panel) -> {
             panel.setLayout(null);
         });
-        appRegistry.panels().forEach((name, panel) -> {
-            panel.setLayout(null);
-        });
-
     }
 
-    public PanelRegistry<BasePanelImpl> getLayoutsPanels() {
-        return layoutRegistry;
-    }
-
-    public PanelRegistry<BasePanelImpl> getAppsPanels() {
-        return appRegistry;
+    public PanelRegistry<BasePanelImpl> panels() {
+        return registry;
     }
 }

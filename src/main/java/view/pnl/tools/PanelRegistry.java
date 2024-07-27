@@ -10,7 +10,7 @@ public class PanelRegistry<T> {
 
     public PanelRegistry() {}
 
-    public boolean registry(String pName, T panel) {
+    public boolean register(String pName, T panel) {
         if (!(panel instanceof BasePanel)) {
             return false;
         }

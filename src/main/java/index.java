@@ -1,16 +1,15 @@
 import view.frm.MainFrame;
 import view.pnl.MainPanel;
-import view.pnl.PanelMgr;
+import view.pnl.manager.LayoutMgr;
 
 public class index {
     public static void main(String[] args) {
         try {
             MainFrame mainFrame = new MainFrame();
             MainPanel mainPanel = new MainPanel();
-            PanelMgr panelMgr = new PanelMgr();
+            LayoutMgr layoutMgr = new LayoutMgr();
 
-            mainPanel.initLayout(panelMgr.getLayoutsPanels());
-
+            mainPanel.initLayout(layoutMgr.panels());
             mainFrame.setPanel(mainPanel);
         } catch (Exception e) {
             // TODO: global exception handle
