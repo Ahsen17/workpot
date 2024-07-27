@@ -1,8 +1,8 @@
 package view.pnl.layout;
 
-import common.FileCharacters;
-import common.ImageConstantPath;
-import view.pnl.BasePanelImpl;
+import enums.FileCharacters;
+import enums.ImageConstantPath;
+import view.pnl.interfaces.BasePanelImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +17,7 @@ public class AppPanel extends BasePanelImpl {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        ImageIcon exePanelBg = new ImageIcon(ImageConstantPath.PanelBgPath + "/" + "AppPanel" + "." + FileCharacters.ImageSuffix);
+        ImageIcon exePanelBg = new ImageIcon(ImageConstantPath.PanelBgPath + "/" + "AppPanel" + FileCharacters.ImageSuffix);
         exePanelBg.paintIcon(this, g, 0, 0);
     }
 }

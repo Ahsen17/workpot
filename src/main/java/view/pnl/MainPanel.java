@@ -1,13 +1,10 @@
 package view.pnl;
 
-import view.pnl.layout.*;
-import view.pnl.tools.PanelRegistry;
+import tools.ElementRegistry;
+import view.pnl.interfaces.BasePanelImpl;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 public class MainPanel extends BasePanelImpl {
     public MainPanel() {
@@ -24,8 +21,8 @@ public class MainPanel extends BasePanelImpl {
 
     }
 
-    public void initLayout(PanelRegistry<BasePanelImpl> registry) {
-        registry.panels().forEach((name, panel) -> {
+    public void setLayouts(HashMap<String, BasePanelImpl> panels) {
+        panels.forEach((name, panel) -> {
             this.add(panel);
         });
     }

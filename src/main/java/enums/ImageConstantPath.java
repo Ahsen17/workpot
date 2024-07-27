@@ -1,4 +1,4 @@
-package common;
+package enums;
 
 public class ImageConstantPath {
     public static final String PanelBgPath = "src/main/resources/pnlbgs";

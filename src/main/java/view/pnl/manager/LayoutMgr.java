@@ -1,14 +1,18 @@
 package view.pnl.manager;
 
+import enums.ModuleEnum;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import view.lbl.DatetimeLabel;
-import view.pnl.BasePanelImpl;
+import view.pnl.interfaces.BasePanelImpl;
 import view.pnl.layout.*;
-import view.pnl.tools.PanelRegistry;
+import tools.ElementRegistry;
 
 import java.awt.*;
+import java.util.HashMap;
 
 public class LayoutMgr {
-    private final PanelRegistry<BasePanelImpl> registry = new PanelRegistry<>();
+    private final ElementRegistry<BasePanelImpl> registry = new ElementRegistry<>();
 
     public LayoutMgr() {
         init();
@@ -16,63 +20,61 @@ public class LayoutMgr {
 
     private void init() {
         registerLayouts();
-        initGeneralCharacters();
+        setGenerals();
     }
 
     private void registerLayouts() {
-        registerExeLayout();
-        registerAppLayout();
-        registerWebMgrLayout();
-        registerCtlLayout();
-    }
+        Rectangle exePR, appPR, oprPR, ctlPR;
+        exePR = new Rectangle(10, 10, 1775, 170);
+        appPR = new Rectangle(10, 190, 330, 810);
+        oprPR = new Rectangle(350, 190, 1435, 810);
+        ctlPR = new Rectangle(10, 1010, 1775, 40);
 
-    private void registerExeLayout() {
-        ExePanel exeP = new ExePanel();
-
-        exeP.setBackground(Color.CYAN);
-        exeP.setBounds(10, 10, 1775, 170);
-
-        registry.register("ExePanel", exeP);
-    }
-
-    private void registerAppLayout() {
-        AppPanel appP = new AppPanel();
-
-        appP.setBackground(Color.YELLOW);
-        appP.setBounds(10, 190, 330, 810);
-
-        registry.register("AppPanel", appP);
-    }
-
-    private void registerWebMgrLayout() {
-        MgrPanel webMgrP = new MgrPanel();
-
-        webMgrP.setBackground(Color.ORANGE);
-        webMgrP.setBounds(350, 190, 1435, 810);
-
-        registry.register("WebMgrPanel", webMgrP);
-    }
-
-    private void registerCtlLayout() {
-        CtlPanel ctlP = new CtlPanel();
+        // 控制面板
         DatetimeLabel timerL = new DatetimeLabel();
-        ctlP.setTimer(timerL);
-
-        ctlP.setBackground(Color.PINK);
-        ctlP.setBounds(10,1010,1775,40);
-
         timerL.setBounds(1364,5,236,30);
 
-        registry.register("CtlPanel", ctlP);
+        BasePanelImpl exeP, appP, oprP, ctlP;
+        exeP = initElement(exePR, ExePanel.class);
+        appP = initElement(appPR, AppPanel.class);
+        oprP = initElement(oprPR, OprPanel.class);
+        ctlP = initElement(ctlPR, CtlPanel.class, timerL);
+
+        registry.register(
+                registry.newEntry(ModuleEnum.EXE, exeP),
+                registry.newEntry(ModuleEnum.APP, appP),
+                registry.newEntry(ModuleEnum.OPR, oprP),
+                registry.newEntry(ModuleEnum.CTL, ctlP)
+        );
     }
 
-    private void initGeneralCharacters() {
-        registry.panels().forEach((name, panel) -> {
+    private void setGenerals() {
+        registry.elements().forEach((name, panel) -> {
             panel.setLayout(null);
         });
     }
 
-    public PanelRegistry<BasePanelImpl> panels() {
-        return registry;
+    public static <T> @Nullable BasePanelImpl initElement(Rectangle r, @NotNull Class<T> c, Component... comps) {
+        BasePanelImpl layout;
+        try {
+            layout = (BasePanelImpl) c.newInstance();
+            layout.setBounds(r);
+            layout.add(comps);
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return layout;
+    }
+
+    public void setMenus(@NotNull HashMap<String, BasePanelImpl[]> menusMap) {
+        HashMap<String, BasePanelImpl> eleMap = registry.elements();
+        menusMap.forEach((name, menus) -> {
+            eleMap.get(name).add(menus);
+        });
+    }
+
+    public HashMap<String, BasePanelImpl> panels() {
+        return registry.elements();
     }
 }

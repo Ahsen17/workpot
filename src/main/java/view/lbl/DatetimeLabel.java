@@ -1,17 +1,23 @@
 package view.lbl;
 
+import view.lbl.interfaces.BaseLabelImpl;
+
 import javax.swing.*;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DatetimeLabel extends BaseLabelImpl{
+public class DatetimeLabel extends BaseLabelImpl {
+
+    private String datetimeTxt = "0000-00-00 00:00:00";
+
     public DatetimeLabel() {
         init();
     }
 
     private void init() {
         setFont(new Font("datetime",3,25));
+        setText(datetimeTxt);
         setTimer();
     }
 

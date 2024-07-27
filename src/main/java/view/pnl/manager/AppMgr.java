@@ -1,10 +1,10 @@
 package view.pnl.manager;
 
-import view.pnl.BasePanelImpl;
-import view.pnl.tools.PanelRegistry;
+import view.pnl.interfaces.BasePanelImpl;
+import tools.ElementRegistry;
 
 public class AppMgr {
-    private final PanelRegistry<BasePanelImpl> registry = new PanelRegistry<>();
+    private final ElementRegistry<BasePanelImpl> registry = new ElementRegistry<>();
 
     public AppMgr() {
         init();
@@ -20,12 +20,12 @@ public class AppMgr {
     }
 
     private void initGeneralCharacters() {
-        registry.panels().forEach((name, panel) -> {
+        registry.elements().forEach((name, panel) -> {
             panel.setLayout(null);
         });
     }
 
-    public PanelRegistry<BasePanelImpl> panels() {
+    public ElementRegistry<BasePanelImpl> panels() {
         return registry;
     }
 }

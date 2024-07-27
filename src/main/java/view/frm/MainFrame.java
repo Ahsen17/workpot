@@ -1,6 +1,8 @@
 package view.frm;
 
-public class MainFrame extends BaseFrameImpl{
+import view.frm.interfaces.BaseFrameImpl;
+
+public class MainFrame extends BaseFrameImpl {
     public MainFrame() {
         init();
     }

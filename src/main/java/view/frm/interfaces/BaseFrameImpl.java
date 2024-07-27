@@ -1,4 +1,4 @@
-package view.frm;
+package view.frm.interfaces;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class BaseFrameImpl extends JFrame implements BaseFrame {
+public abstract class BaseFrameImpl extends JFrame implements BaseFrame {
     protected Float widthPercent;
     protected Float heightPercent;
     protected Integer width;

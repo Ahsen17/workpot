@@ -1,4 +1,4 @@
-package view.frm;
+package view.frm.interfaces;
 
 import javax.swing.*;
 

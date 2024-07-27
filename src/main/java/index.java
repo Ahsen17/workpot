@@ -1,4 +1,5 @@
 import view.frm.MainFrame;
+import view.pnl.manager.MenuMgr;
 import view.pnl.MainPanel;
 import view.pnl.manager.LayoutMgr;
 
@@ -7,9 +8,12 @@ public class index {
         try {
             MainFrame mainFrame = new MainFrame();
             MainPanel mainPanel = new MainPanel();
+
+            MenuMgr menuMgr = new MenuMgr();
             LayoutMgr layoutMgr = new LayoutMgr();
 
-            mainPanel.initLayout(layoutMgr.panels());
+            layoutMgr.setMenus(menuMgr.menus());
+            mainPanel.setLayouts(layoutMgr.panels());
             mainFrame.setPanel(mainPanel);
         } catch (Exception e) {
             // TODO: global exception handle
