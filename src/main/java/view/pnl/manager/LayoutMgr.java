@@ -3,6 +3,7 @@ package view.pnl.manager;
 import enums.ModuleEnum;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import view.Controller;
 import view.lbl.DatetimeLabel;
 import view.pnl.interfaces.BasePanelImpl;
 import view.pnl.layout.*;
@@ -12,7 +13,7 @@ import java.awt.*;
 import java.util.HashMap;
 
 public class LayoutMgr {
-    private final ElementRegistry<BasePanelImpl> registry = new ElementRegistry<>();
+    private final ElementRegistry<BasePanelImpl> registry = Controller.Layouts;
 
     public LayoutMgr() {
         init();
@@ -74,7 +75,7 @@ public class LayoutMgr {
         });
     }
 
-    public HashMap<String, BasePanelImpl> panels() {
+    public HashMap<String, BasePanelImpl> layouts() {
         return registry.elements();
     }
 }

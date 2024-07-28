@@ -21,7 +21,7 @@ public class MainFrame extends BaseFrameImpl {
         setFrameFixed();
 
         // tray character
-//        setTray();
+        setTray();
 
         // fullscreen
 //        fullscreen();

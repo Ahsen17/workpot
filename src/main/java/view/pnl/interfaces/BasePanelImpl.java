@@ -1,7 +1,5 @@
 package view.pnl.interfaces;
 
-import view.pnl.interfaces.BasePanel;
-
 import javax.swing.*;
 import java.awt.*;
 

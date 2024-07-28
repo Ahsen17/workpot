@@ -1,10 +1,11 @@
 package view.pnl.manager;
 
+import view.Controller;
 import view.pnl.interfaces.BasePanelImpl;
 import tools.ElementRegistry;
 
 public class AppMgr {
-    private final ElementRegistry<BasePanelImpl> registry = new ElementRegistry<>();
+    private final ElementRegistry<BasePanelImpl> registry = Controller.Apps;
 
     public AppMgr() {
         init();

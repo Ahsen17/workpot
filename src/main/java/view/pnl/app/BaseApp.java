@@ -7,13 +7,13 @@ import view.pnl.interfaces.BasePanelImpl;
 import javax.swing.*;
 import java.awt.*;
 
-public class BaseApp extends BasePanelImpl {
+public abstract class BaseApp extends BasePanelImpl {
     public BaseApp() {
         init();
     }
 
     private void init() {
-        setBounds(0, 40, 1435, 770);
+        setBounds(0, 40, 1435, 810);
     }
 
 

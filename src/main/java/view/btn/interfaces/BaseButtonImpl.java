@@ -1,7 +1,5 @@
 package view.btn.interfaces;
 
-import view.btn.interfaces.BaseButton;
-
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 

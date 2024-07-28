@@ -1,10 +1,6 @@
 package tools;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 
 public class ElementRegistry<T> {
@@ -37,6 +33,10 @@ public class ElementRegistry<T> {
                 eleMap.putIfAbsent(kv.name, kv.ele);
             }
         }
+    }
+
+    public T get(String name) {
+        return elements().get(name);
     }
 
     public HashMap<String, T> elements() {

@@ -7,7 +7,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class AppButton extends BaseButtonImpl {
-    public AppButton() {
+    private final String name;
+
+    public AppButton(String name) {
+        this.name = name;
+
         init();
     }
 

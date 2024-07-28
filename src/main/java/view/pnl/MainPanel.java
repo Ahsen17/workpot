@@ -1,6 +1,5 @@
 package view.pnl;
 
-import tools.ElementRegistry;
 import view.pnl.interfaces.BasePanelImpl;
 
 import java.awt.*;

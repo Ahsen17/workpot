@@ -45,7 +45,7 @@ public abstract class BaseFrameImpl extends JFrame implements BaseFrame {
         });
 
         try {
-            tray.add(trayIcon);//将托盘图标添加道系统的托盘实例中
+            tray.add(trayIcon);//将托盘图标添加系统的托盘实例中
         } catch (AWTException e) {
             e.printStackTrace();
         }
