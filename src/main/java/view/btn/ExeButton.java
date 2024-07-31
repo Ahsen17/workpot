@@ -6,13 +6,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class ExeButton extends BaseButtonImpl {
+    private final String name;
 
-    public ExeButton() {
+    public ExeButton(String name) {
+        this.name = name;
         init();
     }
 
     private void init() {
         setSize(120, 140);
+        setText(name);
         setContentAreaFilled(false); // 按钮透明
 //        setBorder(null); // 无边框
 

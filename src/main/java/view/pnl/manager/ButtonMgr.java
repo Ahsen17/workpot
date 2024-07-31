@@ -1,9 +1,60 @@
 package view.pnl.manager;
 
 import view.Controller;
+import view.btn.AppButton;
 import view.btn.CtlButton;
+import view.btn.ExeButton;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class ButtonMgr {
+    public static ExeButton[] initExeMenuButtons(int page) {
+        ExeButton[] exeBtns = new ExeButton[20]; {
+            for (int i = 0; i < exeBtns.length; i++) {
+                if (i / 10 + 1 > page) break;
+                exeBtns[i] = new ExeButton(String.valueOf(i + 1));
+                exeBtns[i].setLocation(15 + (i % 10) * 135, 15);
+            }
+        }
+
+        return Arrays.stream(exeBtns).filter(Objects::nonNull).toArray(ExeButton[]::new);
+    }
+
+    public static AppButton[] initAppMenuButton(int page) {
+        ArrayList<AppButton> appBtns = new ArrayList<>(); {
+            // 1.主页
+            AppButton homeApp = new AppButton("MainPane");
+            appBtns.add(homeApp);
+            homeApp.addActionListener(e -> {
+                // TODO: 刷新操作面板即可
+            });
+
+            // 2.浏览器
+            AppButton browserApp = new AppButton("Browser");
+            appBtns.add(browserApp);
+            browserApp.addActionListener(e -> {
+                // TODO: 加载JxBrowser浏览器面板
+            });
+
+            // 3.富文本编辑器
+            AppButton markdownApp = new AppButton("Markdown");
+            appBtns.add(markdownApp);
+            markdownApp.addActionListener(e -> {
+                // TODO: 加载富文本编辑器面板
+            });
+
+            for (int i = 0; i < appBtns.size(); i++) {
+                appBtns.get(i).setLocation(10, 30 + 80 * i);
+            }
+        }
+
+        return appBtns.toArray(new AppButton[]{});
+    }
+
     public static CtlButton[] initCtlMenuButtons() {
         CtlButton[] ctlMBtns = new CtlButton[3]; {
             // 1. 跳转主页并初始化（释放内存）

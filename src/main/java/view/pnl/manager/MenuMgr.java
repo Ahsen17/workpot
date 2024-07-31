@@ -34,12 +34,18 @@ public class MenuMgr {
 
     private void registerMenus() {
         Rectangle exeMR, appMR, oprMR, ctlMR;
+        exeMR = new Rectangle(0, 0, 1775, 170);
+        appMR = new Rectangle(5, 60, 320, 690);
         ctlMR = new Rectangle(1630, 5, 140, 30);
 
         BasePanelImpl exeM, appM, oprM, ctlM;
+        exeM = LayoutMgr.initElement(exeMR, ExeMenu.class, ButtonMgr.initExeMenuButtons(1));
+        appM = LayoutMgr.initElement(appMR, AppMenu.class, ButtonMgr.initAppMenuButton(1));
         ctlM = LayoutMgr.initElement(ctlMR, CtlMenu.class, ButtonMgr.initCtlMenuButtons());
 
         registry.register(
+                registry.newEntry(ModuleEnum.EXE, new BasePanelImpl[]{exeM}),
+                registry.newEntry(ModuleEnum.APP, new BasePanelImpl[]{appM}),
                 registry.newEntry(ModuleEnum.CTL, new BasePanelImpl[]{ctlM})
         );
     }

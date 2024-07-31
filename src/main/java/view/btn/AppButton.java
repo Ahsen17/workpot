@@ -18,6 +18,7 @@ public class AppButton extends BaseButtonImpl {
     private void init() {
         setSize(290, 70);
         setContentAreaFilled(false);
+        setText(name);
         setFont(new Font("appname", 3, 35));
         setFocusPainted(false); // 字体无边框
     }
