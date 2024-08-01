@@ -34,27 +34,27 @@ public class SQLite {
         }
     }
 
-    public SQLite(String dbName) {
+    public SQLite(String dbName) throws SQLException {
         this.dbName = dbName;
         init();
     }
 
-    private void init() {
+    private void init() throws SQLException {
         File dataFolder = new File(DataPath);
         if (!dataFolder.exists()) {
             dataFolder.mkdirs();
         }
 
-        try {
-            connection = DriverManager.getConnection("jdbc:sqlite:" + DataPath + "/" + dbName + ".db");
-            statement = connection.createStatement();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        connection = DriverManager.getConnection("jdbc:sqlite:" + DataPath + "/" + dbName + ".db");
+        statement = connection.createStatement();
     }
 
     public Table newTable(String name) {
         return new Table(name);
+    }
+
+    private void commitTransaction() {
+
     }
 
     public void createTables(Table... tables){
@@ -85,19 +85,23 @@ public class SQLite {
         });
     }
 
-    public String[] showTables() {
-        try {
-            ResultSet rs = statement.executeQuery("SELECT name FROM sqlite_master WHERE type='table'");
-            String[] names = new String[0];
-            while (rs.next()) {
-                String name = rs.getString(1);
-                names = Arrays.copyOf(names, names.length + 1);
-                names[names.length - 1] = name;
-            }
-            return names;
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public String[] showTables() throws SQLException {
+        ResultSet rs = statement.executeQuery("SELECT name FROM sqlite_master WHERE type='table'");
+        String[] names = new String[0];
+        while (rs.next()) {
+            String name = rs.getString(1);
+            names = Arrays.copyOf(names, names.length + 1);
+            names[names.length - 1] = name;
         }
-        return null;
+        return names;
+    }
+
+    public void execSql(String sql) throws SQLException {
+        statement.executeUpdate(sql);
+    }
+
+
+    public void close() throws SQLException {
+        connection.close();
     }
 }
