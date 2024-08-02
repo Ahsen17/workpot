@@ -1,6 +1,7 @@
 package db;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DBMgr {
@@ -13,14 +14,21 @@ public class DBMgr {
         public static final String RENAME = "RENAME";
     }
 
-    public DBMgr(String name) throws SQLException {
-        sqlite = new SQLite(name);
+    public DBMgr(String name) {
+        try {
+            sqlite = new SQLite(name);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 
-    public void createTable(String name, HashMap<String, String> characters) {
-        SQLite.Table table = sqlite.newTable(name);
-        table.setCharacters(characters);
-        sqlite.createTables(table);
+    public SQLite.Table newTable(String name) {
+        return sqlite.newTable(name);
+    }
+
+    public void createTable(SQLite.Table... tables) {
+        sqlite.createTables(tables);
     }
 
     public void dropTable(String name) {
@@ -53,8 +61,8 @@ public class DBMgr {
         }
     }
 
-    public String[] showTables() {
-        String[] tableNames = null;
+    public ArrayList<String> showTables() {
+        ArrayList<String> tableNames = null;
         try {
             tableNames = sqlite.showTables();
         } catch (SQLException e) {

@@ -2,6 +2,7 @@ package db;
 
 import java.io.File;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -24,13 +25,16 @@ public class SQLite {
             this.name = name;
         }
 
-        public void setCharacters(HashMap<String, String> kvs) {
+        public Table setCharacters(HashMap<String, String> kvs) {
             characters.putAll(kvs);
+            return this;
         }
-        public void addCharacter(String key, String... values) {
+        public Table addCharacter(String key, String... values) {
             StringBuffer temp = new StringBuffer();
             Arrays.stream(values).forEach(value -> temp.append(value).append(" "));
             characters.putIfAbsent(key, temp.toString());
+
+            return this;
         }
     }
 
@@ -99,14 +103,17 @@ public class SQLite {
         });
     }
 
-    public String[] showTables() throws SQLException {
+    public ArrayList<String> showTables() throws SQLException {
         ResultSet rs = statement.executeQuery("SELECT name FROM sqlite_master WHERE type='table'");
-        String[] names = new String[0];
+        ArrayList<String> names = null;
         while (rs.next()) {
+            if (names == null) {
+                names = new ArrayList<>();
+            }
             String name = rs.getString(1);
-            names = Arrays.copyOf(names, names.length + 1);
-            names[names.length - 1] = name;
+            names.add(name);
         }
+
         return names;
     }
 
