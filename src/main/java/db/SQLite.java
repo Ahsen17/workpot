@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class SQLite {
 
-    private final static String DataPath = "src/main/java/data";
+    private final static String DataPath = "/data";
 
     private final String dbName;
 
@@ -53,8 +53,22 @@ public class SQLite {
         return new Table(name);
     }
 
-    private void commitTransaction() {
-
+    public void commitTransaction(String... sqls) throws SQLException {
+        if (sqls == null || sqls.length == 0) {
+            return;
+        }
+        try {
+            connection.setAutoCommit(false);
+            for (String sql : sqls) {
+                statement.executeUpdate(sql);
+            }
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            connection.rollback();
+        } finally {
+            connection.setAutoCommit(true);
+        }
     }
 
     public void createTables(Table... tables){
@@ -94,6 +108,21 @@ public class SQLite {
             names[names.length - 1] = name;
         }
         return names;
+    }
+
+    public HashMap<String, String> showTableStruct(String tblName) {
+        HashMap<String, String> struct = new HashMap<>();
+        try {
+            ResultSet rs = statement.executeQuery("PRAGMA table_info(" + tblName + ")");
+            while (rs.next()) {
+                String name = rs.getString(1);
+                String type = rs.getString(2);
+                struct.putIfAbsent(name, type);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return struct;
     }
 
     public void execSql(String sql) throws SQLException {
