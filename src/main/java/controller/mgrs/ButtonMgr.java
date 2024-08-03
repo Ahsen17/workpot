@@ -35,11 +35,7 @@ public class ButtonMgr {
                     int finalI = i;
                     JShellLink exe = exes.get(finalI);
                     String path = exe.getFolder() + "\\" + exe.getName();
-                    // 启动程序
-                    exeBtns[finalI].addActionListener(e -> {
-                        runExec(path);
-                    });
-                    // 设置图像
+                    exeBtns[finalI].addActionListener(e -> runExec(path));
                     exeBtns[finalI].setIcon(new ImageIcon(exes.get(finalI).getIconLocation()));
                 }
 

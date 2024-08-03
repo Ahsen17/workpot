@@ -40,6 +40,10 @@ public class ExeMarks {
     }
 
     public void addExe(JShellLink exe) {
+        if (getExe(exe.getName()) != null) {
+            return;
+        }
+
         String insertRow = "INSERT INTO exe(folder, name, path, icon, iconIdx) VALUES(" +
                 "'" + exe.getFolder() + "', " +
                 "'" + exe.getName() + "', " +
