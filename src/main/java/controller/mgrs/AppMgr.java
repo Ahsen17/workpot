@@ -1,6 +1,6 @@
-package view.pnl.manager;
+package controller.mgrs;
 
-import view.Controller;
+import controller.Controller;
 import view.pnl.interfaces.BasePanelImpl;
 import tools.ElementRegistry;
 

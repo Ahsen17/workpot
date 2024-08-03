@@ -1,4 +1,4 @@
-import view.Controller;
+import controller.Controller;
 
 public class index {
     public static void main(String[] args) {

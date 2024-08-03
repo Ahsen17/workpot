@@ -1,21 +1,19 @@
-package view;
+package controller;
 
-import db.DBMgr;
 import db.SQLite;
+import domain.ExeMarks;
 import tools.ElementRegistry;
 import view.frm.MainFrame;
 import view.frm.interfaces.BaseFrameImpl;
 import view.pnl.MainPanel;
 import view.pnl.interfaces.BasePanelImpl;
-import view.pnl.manager.LayoutMgr;
-import view.pnl.manager.MenuMgr;
-
-import java.util.HashMap;
+import controller.mgrs.LayoutMgr;
+import controller.mgrs.MenuMgr;
 
 public class Controller {
-    private static final DBMgr db = new DBMgr("workpot");
-
     private static final BaseFrameImpl MainFrame = new MainFrame();
+
+    public static final SQLite db = new SQLite("workpot");
 
     public static final ElementRegistry<BasePanelImpl> Layouts = new ElementRegistry<>();
 
@@ -23,30 +21,11 @@ public class Controller {
 
     public static final ElementRegistry<BasePanelImpl> Apps = new ElementRegistry<>();
 
+    public static final ElementRegistry<String> UrlHistories = new ElementRegistry<>();
+
+    public static final ExeMarks ExeMarks = new ExeMarks();
+
     private Controller() {}
-
-    static {
-        initDBAndTbls();
-    }
-
-    public static void initDBAndTbls() {
-        if (db.showTables() != null) {
-            return;
-        }
-        db.createTable(
-                db.newTable("app")
-                        .addCharacter("id", "INTEGER PRIMARY KEY AUTOINCREMENT")
-                        .addCharacter("name", "VARCHAR(16) NOT NULL"),
-                db.newTable("exe")
-                        .addCharacter("id", "INTEGER PRIMARY KEY AUTOINCREMENT")
-                        .addCharacter("name", "VARCHAR(255) NOT NULL")
-                        .addCharacter("path", "VARCHAR(255) NOT NULL")
-        );
-    }
-
-    public static DBMgr getDB() {
-        return db;
-    }
 
     public static void initSwings() {
         try {

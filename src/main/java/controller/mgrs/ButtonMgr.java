@@ -1,6 +1,6 @@
-package view.pnl.manager;
+package controller.mgrs;
 
-import view.Controller;
+import controller.Controller;
 import view.btn.AppButton;
 import view.btn.CtlButton;
 import view.btn.ExeButton;
@@ -58,7 +58,7 @@ public class ButtonMgr {
             // 1. 跳转主页并初始化（释放内存）
             ctlMBtns[0] = new CtlButton("home");
             ctlMBtns[0].addActionListener(event -> {
-                // TODO: 跳转主页并重新初始化程序
+                Controller.Home();
             });
 
             // 2. 最小化到托盘

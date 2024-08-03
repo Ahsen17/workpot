@@ -1,9 +1,9 @@
-package view.pnl.manager;
+package controller.mgrs;
 
 import enums.ModuleEnum;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import view.Controller;
+import controller.Controller;
 import view.lbl.DatetimeLabel;
 import view.pnl.interfaces.BasePanelImpl;
 import view.pnl.layout.*;

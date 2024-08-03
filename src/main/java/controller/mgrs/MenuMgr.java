@@ -1,8 +1,8 @@
-package view.pnl.manager;
+package controller.mgrs;
 
 import enums.ModuleEnum;
 import tools.ElementRegistry;
-import view.Controller;
+import controller.Controller;
 import view.pnl.interfaces.BasePanelImpl;
 import view.pnl.menu.AppMenu;
 import view.pnl.menu.CtlMenu;
