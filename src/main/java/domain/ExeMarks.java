@@ -12,7 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class ExeMarks {
-    private final SQLite db = Controller.db;
+    private final SQLite db = new SQLite("workpot");
 
     public ExeMarks() {
         init();
@@ -40,7 +40,7 @@ public class ExeMarks {
     }
 
     public void addExe(JShellLink exe) {
-        String insertRow = "INSERT INTO exe(name, path, icon, iconIdx) VALUES(" +
+        String insertRow = "INSERT INTO exe(folder, name, path, icon, iconIdx) VALUES(" +
                 "'" + exe.getFolder() + "', " +
                 "'" + exe.getName() + "', " +
                 "'" + exe.getPath() + "', " +

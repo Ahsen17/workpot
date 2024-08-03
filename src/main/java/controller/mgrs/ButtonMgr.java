@@ -1,20 +1,48 @@
 package controller.mgrs;
 
 import controller.Controller;
+import domain.ExeMarks;
+import net.jimmc.jshortcut.JShellLink;
 import view.btn.AppButton;
 import view.btn.CtlButton;
 import view.btn.ExeButton;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
 public class ButtonMgr {
+    private ButtonMgr() {}
+
+    private static void runExec(String exePath) {
+        final Runtime runtime = Runtime.getRuntime();
+        final String cmd = "rundll32 url.dll FileProtocolHandler file://" + exePath;
+        try {
+            runtime.exec(cmd);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static ExeButton[] initExeMenuButtons(int page) {
-        ExeButton[] exeBtns = new ExeButton[20]; {
+        ExeMarks exeMarks = Controller.ExeMarks;
+        ArrayList<JShellLink> exes = exeMarks.getExes(1);
+        ExeButton[] exeBtns = new ExeButton[exes.size()]; {
             for (int i = 0; i < exeBtns.length; i++) {
                 if (i / 10 + 1 > page) break;
-                exeBtns[i] = new ExeButton(String.valueOf(i + 1));
+                exeBtns[i] = new ExeButton(exes.get(i).getName()); {
+                    int finalI = i;
+                    JShellLink exe = exes.get(finalI);
+                    String path = exe.getFolder() + "\\" + exe.getName();
+                    // 启动程序
+                    exeBtns[finalI].addActionListener(e -> {
+                        runExec(path);
+                    });
+                    // 设置图像
+                    exeBtns[finalI].setIcon(new ImageIcon(exes.get(finalI).getIconLocation()));
+                }
+
                 exeBtns[i].setLocation(15 + (i % 10) * 135, 15);
             }
         }

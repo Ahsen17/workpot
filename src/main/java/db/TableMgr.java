@@ -34,8 +34,10 @@ public class TableMgr {
         Connection conn = db.getConnection();
         Statement state = null;
         try {
+            conn.setAutoCommit(false);
             state = conn.createStatement();
             state.executeUpdate(sql);
+            conn.setAutoCommit(true);
         } catch (SQLException e) {
             db.rollback();
             e.printStackTrace();
