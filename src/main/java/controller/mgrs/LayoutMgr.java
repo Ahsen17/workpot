@@ -59,8 +59,10 @@ public class LayoutMgr {
         BasePanelImpl layout;
         try {
             layout = (BasePanelImpl) c.newInstance();
-            layout.setBounds(r);
             layout.add(comps);
+            if (r != null) {
+                layout.setBounds(r);
+            }
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
             return null;
@@ -70,8 +72,11 @@ public class LayoutMgr {
 
     public void setMenus(@NotNull HashMap<String, BasePanelImpl[]> menusMap) {
         HashMap<String, BasePanelImpl> eleMap = registry.elements();
-        menusMap.forEach((name, menus) -> {
-            eleMap.get(name).add(menus);
+        eleMap.forEach((name, panel) -> {
+            if (menusMap.get(name) == null) {
+                return;
+            }
+            panel.add(menusMap.get(name));
         });
     }
 

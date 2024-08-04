@@ -2,14 +2,18 @@ package controller.mgrs;
 
 import controller.Controller;
 import domain.ExeMarks;
+import enums.AppEnum;
+import enums.ModuleEnum;
 import net.jimmc.jshortcut.JShellLink;
 import view.btn.AppButton;
 import view.btn.CtlButton;
 import view.btn.ExeButton;
+import view.pnl.interfaces.BasePanelImpl;
 
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class ButtonMgr {
@@ -56,10 +60,14 @@ public class ButtonMgr {
             });
 
             // 2.浏览器
-            AppButton browserApp = new AppButton("Browser");
+            AppButton browserApp = new AppButton("BrowserApp");
             appBtns.add(browserApp);
             browserApp.addActionListener(e -> {
-                // TODO: 加载JxBrowser浏览器面板
+                HashMap<String, BasePanelImpl> apps = Controller.Apps.elements();
+                BasePanelImpl browser = apps.get(AppEnum.Browser);
+                BasePanelImpl oprPnl = Controller.Layouts.elements().get(ModuleEnum.OPR);
+                oprPnl.add(browser);
+                oprPnl.updateUI();
             });
 
             // 3.富文本编辑器

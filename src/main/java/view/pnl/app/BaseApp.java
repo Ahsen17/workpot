@@ -13,7 +13,9 @@ public abstract class BaseApp extends BasePanelImpl {
     }
 
     private void init() {
-        setBounds(0, 40, 1435, 810);
+        setSize(1435, 810);
+        setLayout(null);
+        setOpaque(false);
     }
 
 
@@ -21,6 +23,6 @@ public abstract class BaseApp extends BasePanelImpl {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         ImageIcon exePanelBg = new ImageIcon(ImageConstantPath.AppBgPath + "/" + "BaseApp"  + FileCharacters.ImageSuffix);
-        exePanelBg.paintIcon(this, g, 0, 0);
+        exePanelBg.paintIcon(this, g, 0, 40);
     }
 }

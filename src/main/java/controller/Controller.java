@@ -1,5 +1,6 @@
 package controller;
 
+import controller.mgrs.AppMgr;
 import db.SQLite;
 import domain.ExeMarks;
 import tools.ElementRegistry;
@@ -33,8 +34,10 @@ public class Controller {
 
             MenuMgr menuMgr = new MenuMgr();
             LayoutMgr layoutMgr = new LayoutMgr();
+            AppMgr appMgr = new AppMgr();
 
             layoutMgr.setMenus(menuMgr.menus());
+            appMgr.setMenus(menuMgr.menus());
             mainPanel.setLayouts(layoutMgr.layouts());
 
             MainFrame.setPanel(mainPanel);

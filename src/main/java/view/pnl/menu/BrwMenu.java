@@ -2,8 +2,10 @@ package view.pnl.menu;
 
 import view.pnl.interfaces.BasePanelImpl;
 
-public class BrowserMenu extends BasePanelImpl {
-    public BrowserMenu() {
+import java.awt.*;
+
+public class BrwMenu extends BasePanelImpl {
+    public BrwMenu() {
         init();
     }
 

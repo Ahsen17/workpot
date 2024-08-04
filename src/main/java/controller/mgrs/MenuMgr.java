@@ -1,13 +1,11 @@
 package controller.mgrs;
 
+import enums.AppEnum;
 import enums.ModuleEnum;
 import tools.ElementRegistry;
 import controller.Controller;
 import view.pnl.interfaces.BasePanelImpl;
-import view.pnl.menu.AppMenu;
-import view.pnl.menu.CtlMenu;
-import view.pnl.menu.ExeMenu;
-import view.pnl.menu.OprMenu;
+import view.pnl.menu.*;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -33,22 +31,25 @@ public class MenuMgr {
     }
 
     private void registerMenus() {
-        Rectangle exeMR, appMR, oprMR, ctlMR;
+        Rectangle exeMR, appMR, oprMR, ctlMR, browserMR;
         exeMR = new Rectangle(0, 0, 1775, 170);
         appMR = new Rectangle(5, 60, 320, 690);
         oprMR = new Rectangle();
         ctlMR = new Rectangle(1630, 5, 140, 30);
+        browserMR = new Rectangle(0, 0, 1435, 40);
 
-        BasePanelImpl exeM, appM, oprM, ctlM;
+        BasePanelImpl exeM, appM, oprM, ctlM, browserM;
         exeM = LayoutMgr.initElement(exeMR, ExeMenu.class, ButtonMgr.initExeMenuButtons(1));
         appM = LayoutMgr.initElement(appMR, AppMenu.class, ButtonMgr.initAppMenuButton(1));
         oprM = LayoutMgr.initElement(oprMR, OprMenu.class);
         ctlM = LayoutMgr.initElement(ctlMR, CtlMenu.class, ButtonMgr.initCtlMenuButtons());
+        browserM = LayoutMgr.initElement(browserMR, BrwMenu.class);
 
         registry.register(
                 registry.newEntry(ModuleEnum.EXE, new BasePanelImpl[]{exeM}),
                 registry.newEntry(ModuleEnum.APP, new BasePanelImpl[]{appM}),
-                registry.newEntry(ModuleEnum.CTL, new BasePanelImpl[]{ctlM})
+                registry.newEntry(ModuleEnum.CTL, new BasePanelImpl[]{ctlM}),
+                registry.newEntry(AppEnum.Browser, new BasePanelImpl[]{browserM})
         );
     }
 
