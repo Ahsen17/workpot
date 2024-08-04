@@ -26,12 +26,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
 public class JxBrowser {
-    private static final String CacheDir = "data/browser";
+    private static final String CacheDir = "data/onlyBrowser";
 
     // jxbrowser 7.3+ tial key, expire on 2024-09-03
     private String LICENSE;
@@ -43,7 +44,9 @@ public class JxBrowser {
 
     private Profiles profiles;
 
-    private Browser browser;
+    private Browser onlyBrowser;
+
+    private ArrayList<Browser> browserList;
 
     private Navigation navigation;
 
@@ -112,28 +115,25 @@ public class JxBrowser {
 
     private void initBrowser() {
         assert engine != null;
-        browser = engine.newBrowser();
-        browser.on(BrowserClosed.class, e -> {
-            System.out.println("Current browser is closed.");
+        onlyBrowser = engine.newBrowser();
+        onlyBrowser.on(BrowserClosed.class, e -> {
+            System.out.println("Current onlyBrowser is closed.");
         });
-        browser.set(CreatePopupCallback.class, params -> CreatePopupCallback.Response.suppress());
-        browser.set(OpenPopupCallback.class, (params) -> {
-            // 访问已创建的弹出窗口。
+//        onlyBrowser.set(CreatePopupCallback.class, params -> CreatePopupCallback.Response.suppress());  // 禁用弹出窗口
+        onlyBrowser.set(OpenPopupCallback.class, (params) -> {
             Browser popup = params.popupBrowser();
-            // TODO: 禁止窗口重定向，仅在窗口内完成跳转
-            System.out.println("ceshi");
-            System.out.println(popup.title());
-            System.out.println(popup.title().length());
-            System.out.println(popup.url().length());
-            browserLoadUrl(popup.url());
-            return null;
+            // 新增标签页
+            browserList.add(popup);
+            return OpenPopupCallback.Response.proceed();
         });
 
+        browserList = new ArrayList<>();
+        browserList.add(onlyBrowser);
     }
 
     private void initNavigation() {
-        assert browser != null;
-        navigation = browser.navigation();
+        assert onlyBrowser != null;
+        navigation = onlyBrowser.navigation();
     }
 
     private void initProxy() {
@@ -148,12 +148,12 @@ public class JxBrowser {
     }
 
     private void initBrowserView() {
-        assert browser != null;
-        browserView = BrowserView.newInstance(browser);
+        assert onlyBrowser != null;
+        browserView = BrowserView.newInstance(onlyBrowser);
     }
 
     private void initAudio() {
-        audio = browser.audio();
+        audio = onlyBrowser.audio();
     }
 
     public void closeEngine() {
@@ -162,18 +162,18 @@ public class JxBrowser {
     }
 
     public void resizeBrowser(Dimension dimension) {
-        assert browser != null && !browser.isClosed();
-        browser.resize(dimension.width, dimension.height);
+        assert onlyBrowser != null && !onlyBrowser.isClosed();
+        onlyBrowser.resize(dimension.width, dimension.height);
     }
 
     public void resizeBrowser(Size size) {
-        assert browser != null && !browser.isClosed();
-        browser.resize(size);
+        assert onlyBrowser != null && !onlyBrowser.isClosed();
+        onlyBrowser.resize(size);
     }
 
     public void resizeBrowser(int width, int height) {
-        assert browser != null && !browser.isClosed();
-        browser.resize(width, height);
+        assert onlyBrowser != null && !onlyBrowser.isClosed();
+        onlyBrowser.resize(width, height);
     }
 
     public void browserLoadUrl(String url) {
@@ -247,10 +247,10 @@ public class JxBrowser {
     }
 
     public void closeBrowser() {
-        if (browser == null || browser.isClosed()) {
-            return;
-        }
-        browser.close();
+        if (browserList.isEmpty()) return;
+        browserList.forEach(b -> {
+            if (!b.isClosed()) b.close();
+        });
     }
 
     public boolean audioIsPlaying() {
@@ -273,5 +273,9 @@ public class JxBrowser {
             return;
         }
         audio.unmute();
+    }
+
+    public ArrayList<Browser> browserList() {
+        return browserList;
     }
 }
