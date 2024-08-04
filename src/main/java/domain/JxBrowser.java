@@ -5,20 +5,27 @@ package domain;
 
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.event.BrowserClosed;
-import com.teamdev.jxbrowser.engine.Engine;
-import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.engine.Language;
-import com.teamdev.jxbrowser.engine.RenderingMode;
+import com.teamdev.jxbrowser.engine.*;
 import com.teamdev.jxbrowser.engine.event.EngineCrashed;
+import com.teamdev.jxbrowser.media.Audio;
+import com.teamdev.jxbrowser.navigation.Navigation;
+import com.teamdev.jxbrowser.navigation.NavigationEntry;
+import com.teamdev.jxbrowser.net.proxy.*;
+import com.teamdev.jxbrowser.password.PasswordRecord;
+import com.teamdev.jxbrowser.password.PasswordStore;
 import com.teamdev.jxbrowser.profile.Profiles;
 import com.teamdev.jxbrowser.ui.Size;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
+import tools.ElementRegistry;
 
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 public class JxBrowser {
@@ -36,7 +43,15 @@ public class JxBrowser {
 
     private Browser browser;
 
+    private Navigation navigation;
+
+    private Proxy proxy;
+
+    private PasswordStore authStore;
+
     private BrowserView browserView;
+
+    private Audio audio;
 
     public JxBrowser() {
         init();
@@ -47,7 +62,11 @@ public class JxBrowser {
         initEngine();
         initProfiles();
         initBrowser();
+        initNavigation();
+        initProxy();
+        initAuthStore();
         initBrowserView();
+        initAudio();
     }
 
     private void loadLicense() {
@@ -97,9 +116,29 @@ public class JxBrowser {
         });
     }
 
+    private void initNavigation() {
+        assert browser != null;
+        navigation = browser.navigation();
+    }
+
+    private void initProxy() {
+        proxy = engine.proxy();  // 使用web默认代理
+        proxy.config(SystemProxyConfig.newInstance());  // 使用系统默认代理
+//        proxy.config(DirectProxyConfig.newInstance());  // 使用直连代理
+//        proxy.config(AutoDetectProxyConfig.newInstance());  // 自动检测代理设置
+    }
+
+    private void initAuthStore() {
+        authStore = profiles.defaultProfile().passwordStore();
+    }
+
     private void initBrowserView() {
         assert browser != null;
         browserView = BrowserView.newInstance(browser);
+    }
+
+    private void initAudio() {
+        audio = browser.audio();
     }
 
     public void closeEngine() {
@@ -125,8 +164,66 @@ public class JxBrowser {
     }
 
     public void browserLoadUrl(String url) {
-        assert browser != null && !browser.isClosed();
-        browser.navigation().loadUrl(url);
+        navigation.loadUrl(url);
+    }
+
+    public void browserLoadUrlAndWait(String url, int seconds) {
+        navigation.loadUrlAndWait(url, Duration.ofSeconds(seconds));
+    }
+
+    public void browserLoadHtml(String htmlPath) {
+        navigation.loadUrl(new File(htmlPath).getAbsolutePath());
+    }
+
+    public void browserReload() {
+        navigation.reload();
+    }
+
+    public void browserReloadIgnoreCache() {
+        navigation.reloadIgnoringCache();
+    }
+
+    public void browserStopLoad() {
+        navigation.stop();
+    }
+
+    public void browserGoBack() {
+        navigation.goBack();
+    }
+
+    public void browserGoForward() {
+        navigation.goForward();
+    }
+
+    public HashMap<Integer, ElementRegistry<String>.Entry> browserHistories() {
+        HashMap<Integer, ElementRegistry<String>.Entry> histories = new HashMap<>();
+        for (int i = 0; i < navigation.entryCount(); i++) {
+            NavigationEntry entry = navigation.entryAtIndex(i);
+            histories.putIfAbsent(i, new ElementRegistry<String>().newEntry(entry.title(), entry.url())); // 历史记录()
+        }
+        return histories;
+    }
+
+    public void browserGoIndex(int index) {
+        if (index >= 0 && index < navigation.entryCount()) {
+            navigation.goToIndex(index);
+        }
+    }
+
+    public void proxyCustomize(String proxyRules, String exceptions) {
+        if (proxyRules == null || proxyRules.length() == 0) {
+            proxyRules = "http=127.0.0.1:7890;https=127.0.0.1:7890";
+            exceptions = "<local>";  // 本地网页绕过代理服务器
+        }
+        CustomProxyConfig.newInstance(proxyRules, exceptions);
+    }
+
+    public List<PasswordRecord> authAllRecords() {
+        return authStore.allSaved();
+    }
+
+    public void authRemoveBasedOnUrl(String url) {
+        authStore.removeByUrl(url);
     }
 
     public BrowserView getView() {
@@ -138,5 +235,27 @@ public class JxBrowser {
             return;
         }
         browser.close();
+    }
+
+    public boolean audioIsPlaying() {
+        return audio.isPlaying();
+    }
+
+    public boolean audioIsMuted() {
+        return audio.isMuted();
+    }
+
+    public void muteAudio() {
+        if (audioIsMuted()) {
+            return;
+        }
+        audio.mute();
+    }
+
+    public void unmuteAudio() {
+        if (!audioIsMuted()) {
+            return;
+        }
+        audio.unmute();
     }
 }
