@@ -4,6 +4,8 @@
 package domain;
 
 import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.browser.callback.CreatePopupCallback;
+import com.teamdev.jxbrowser.browser.callback.OpenPopupCallback;
 import com.teamdev.jxbrowser.browser.event.BrowserClosed;
 import com.teamdev.jxbrowser.engine.*;
 import com.teamdev.jxbrowser.engine.event.EngineCrashed;
@@ -114,6 +116,19 @@ public class JxBrowser {
         browser.on(BrowserClosed.class, e -> {
             System.out.println("Current browser is closed.");
         });
+        browser.set(CreatePopupCallback.class, params -> CreatePopupCallback.Response.suppress());
+        browser.set(OpenPopupCallback.class, (params) -> {
+            // 访问已创建的弹出窗口。
+            Browser popup = params.popupBrowser();
+            // TODO: 禁止窗口重定向，仅在窗口内完成跳转
+            System.out.println("ceshi");
+            System.out.println(popup.title());
+            System.out.println(popup.title().length());
+            System.out.println(popup.url().length());
+            browserLoadUrl(popup.url());
+            return null;
+        });
+
     }
 
     private void initNavigation() {
@@ -142,9 +157,7 @@ public class JxBrowser {
     }
 
     public void closeEngine() {
-        if (engine == null || engine.isClosed()) {
-            return;
-        }
+        if (engine == null || engine.isClosed()) return;
         engine.close();
     }
 
@@ -164,14 +177,17 @@ public class JxBrowser {
     }
 
     public void browserLoadUrl(String url) {
+        if (url == null || url.isEmpty()) return;
         navigation.loadUrl(url);
     }
 
     public void browserLoadUrlAndWait(String url, int seconds) {
+        if (url == null || url.isEmpty()) return;
         navigation.loadUrlAndWait(url, Duration.ofSeconds(seconds));
     }
 
     public void browserLoadHtml(String htmlPath) {
+        if (htmlPath == null || htmlPath.isEmpty()) return;
         navigation.loadUrl(new File(htmlPath).getAbsolutePath());
     }
 
@@ -211,11 +227,11 @@ public class JxBrowser {
     }
 
     public void proxyCustomize(String proxyRules, String exceptions) {
-        if (proxyRules == null || proxyRules.length() == 0) {
+        if (proxyRules == null || proxyRules.isEmpty()) {
             proxyRules = "http=127.0.0.1:7890;https=127.0.0.1:7890";
             exceptions = "<local>";  // 本地网页绕过代理服务器
         }
-        CustomProxyConfig.newInstance(proxyRules, exceptions);
+        proxy.config(CustomProxyConfig.newInstance(proxyRules, exceptions));
     }
 
     public List<PasswordRecord> authAllRecords() {

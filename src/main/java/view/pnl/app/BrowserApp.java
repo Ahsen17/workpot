@@ -1,39 +1,28 @@
 package view.pnl.app;
 
+import com.teamdev.jxbrowser.view.swing.BrowserView;
 import domain.JxBrowser;
 
 public class BrowserApp extends BaseApp{
-    private static final JxBrowser browser = new JxBrowser();
+    // WARNING: should be private, exhausted to package
+    public final JxBrowser browser = new JxBrowser();
+
+    private final BrowserView browserView = browser.getView();
 
     public BrowserApp() {
         init();
     }
 
     private void init() {
-
+        browserView.setBounds(0, 40, this.getWidth(), this.getHeight() - 40);
     }
 
-    public void initBrowser(String url) {
-        if (url == null && url.length() == 0) {
-            return;
-        }
-
-        browser.browserLoadUrl(url);
-        var browserView = browser.getView();
-        browserView.setBounds(0, 40, this.getWidth(), this.getHeight() - 40);
+    public void updateView() {
         add(browserView);
         updateUI();
     }
 
-    public void loadUrl(String url) {
-        browser.browserLoadUrl(url);
-    }
-
-    public void back() {
-
-    }
-
-    public void forward() {
-
+    public void removeView() {
+        removeAll();
     }
 }

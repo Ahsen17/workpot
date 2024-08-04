@@ -3,10 +3,12 @@ package controller;
 import controller.mgrs.AppMgr;
 import db.SQLite;
 import domain.ExeMarks;
+import enums.AppEnum;
 import tools.ElementRegistry;
 import view.frm.MainFrame;
 import view.frm.interfaces.BaseFrameImpl;
 import view.pnl.MainPanel;
+import view.pnl.app.BrowserApp;
 import view.pnl.interfaces.BasePanelImpl;
 import controller.mgrs.LayoutMgr;
 import controller.mgrs.MenuMgr;
@@ -61,7 +63,13 @@ public class Controller {
     }
 
     public static void Exit() {
-        System.exit(0);
+        BrowserApp browserApp = (BrowserApp) Apps.elements().get(AppEnum.Browser);
+        SwingUtilities.invokeLater(() -> {
+            browserApp.removeView();
+            browserApp.browser.closeBrowser();
+            browserApp.browser.closeEngine();
+            System.exit(0);
+        });
     }
 
     public static void OprFullscreen() {

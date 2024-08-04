@@ -4,6 +4,7 @@ import enums.AppEnum;
 import enums.ModuleEnum;
 import tools.ElementRegistry;
 import controller.Controller;
+import view.input.UrlInput;
 import view.pnl.interfaces.BasePanelImpl;
 import view.pnl.menu.*;
 
@@ -38,12 +39,16 @@ public class MenuMgr {
         ctlMR = new Rectangle(1630, 5, 140, 30);
         browserMR = new Rectangle(0, 0, 1435, 40);
 
+        // 操作面板
+        UrlInput urlI = new UrlInput();
+        urlI.setBounds(0, 0, 400, 40);
+
         BasePanelImpl exeM, appM, oprM, ctlM, browserM;
         exeM = LayoutMgr.initElement(exeMR, ExeMenu.class, ButtonMgr.initExeMenuButtons(1));
         appM = LayoutMgr.initElement(appMR, AppMenu.class, ButtonMgr.initAppMenuButton(1));
         oprM = LayoutMgr.initElement(oprMR, OprMenu.class);
         ctlM = LayoutMgr.initElement(ctlMR, CtlMenu.class, ButtonMgr.initCtlMenuButtons());
-        browserM = LayoutMgr.initElement(browserMR, BrwMenu.class);
+        browserM = LayoutMgr.initElement(browserMR, BrwMenu.class, urlI);
 
         registry.register(
                 registry.newEntry(ModuleEnum.EXE, new BasePanelImpl[]{exeM}),
