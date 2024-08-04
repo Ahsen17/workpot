@@ -11,6 +11,8 @@ import view.pnl.interfaces.BasePanelImpl;
 import controller.mgrs.LayoutMgr;
 import controller.mgrs.MenuMgr;
 
+import javax.swing.*;
+
 public class Controller {
     private static final BaseFrameImpl MainFrame = new MainFrame();
 
@@ -30,17 +32,19 @@ public class Controller {
 
     public static void initSwings() {
         try {
-            MainPanel mainPanel = new MainPanel();
+            SwingUtilities.invokeLater(() -> {
+                MainPanel mainPanel = new MainPanel();
 
-            MenuMgr menuMgr = new MenuMgr();
-            LayoutMgr layoutMgr = new LayoutMgr();
-            AppMgr appMgr = new AppMgr();
+                MenuMgr menuMgr = new MenuMgr();
+                LayoutMgr layoutMgr = new LayoutMgr();
+                AppMgr appMgr = new AppMgr();
 
-            layoutMgr.setMenus(menuMgr.menus());
-            appMgr.setMenus(menuMgr.menus());
-            mainPanel.setLayouts(layoutMgr.layouts());
+                layoutMgr.setMenus(menuMgr.menus());
+                appMgr.setMenus(menuMgr.menus());
+                mainPanel.setLayouts(layoutMgr.layouts());
 
-            MainFrame.setPanel(mainPanel);
+                MainFrame.setPanel(mainPanel);
+            });
         } catch (Exception e) {
             // TODO: global exception handle
         }

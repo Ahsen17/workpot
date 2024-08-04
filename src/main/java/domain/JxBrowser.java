@@ -1,4 +1,5 @@
 // WIKI: https://teamdev.cn/jxbrowser/zh/docs/guides/engine.html
+// Configure with IntelliJ IDEA: https://teamdev.com/jxbrowser/docs/tutorials/ide/intellij-idea.html
 
 package domain;
 
@@ -14,10 +15,20 @@ import com.teamdev.jxbrowser.ui.Size;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.nio.file.Paths;
+import java.util.Scanner;
 
 public class JxBrowser {
     private static final String CacheDir = "data/browser";
+
+    // jxbrowser 7.3+ tial key, expire on 2024-09-03
+    private String LICENSE;
+
+    // jxbrowser 7.22 test key, do not use for commercial
+    private String TestLicense;
 
     private Engine engine;
 
@@ -32,16 +43,36 @@ public class JxBrowser {
     }
 
     private void init() {
+        loadLicense();
         initEngine();
         initProfiles();
         initBrowser();
         initBrowserView();
     }
 
+    private void loadLicense() {
+        try {
+            File license = new File("etc/LICENSE");
+            File licenseTrial = new File("etc/LICENSE_TRIAL");
+            if (license.exists()) {
+                Scanner sc = new Scanner(new FileReader(license));
+                Scanner sc2 = new Scanner(new FileReader(licenseTrial));
+                TestLicense = sc.nextLine();
+                LICENSE = sc2.nextLine();
+                sc.close();
+                sc2.close();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void initEngine() {
         engine = Engine.newInstance(EngineOptions.newBuilder(RenderingMode.OFF_SCREEN)
                 .language(Language.CHINESE)  // 设置为中文
                 .userDataDir(Paths.get(CacheDir))  // 设置浏览器缓存路径
+                .licenseKey(LICENSE)
+                .licenseKey(TestLicense)
                 .chromiumDir(Paths.get(CacheDir + "/chromium"))  // 设置浏览器缓存路径
                 .disableTouchMenu()  // 禁用windows触控
                 .build()
@@ -86,6 +117,20 @@ public class JxBrowser {
     public void resizeBrowser(Size size) {
         assert browser != null && !browser.isClosed();
         browser.resize(size);
+    }
+
+    public void resizeBrowser(int width, int height) {
+        assert browser != null && !browser.isClosed();
+        browser.resize(width, height);
+    }
+
+    public void browserLoadUrl(String url) {
+        assert browser != null && !browser.isClosed();
+        browser.navigation().loadUrl(url);
+    }
+
+    public BrowserView getView() {
+        return browserView;
     }
 
     public void closeBrowser() {

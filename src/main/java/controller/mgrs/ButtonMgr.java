@@ -60,7 +60,7 @@ public class ButtonMgr {
             });
 
             // 2.浏览器
-            AppButton browserApp = new AppButton("BrowserApp");
+            AppButton browserApp = new AppButton(AppEnum.Browser);
             appBtns.add(browserApp);
             browserApp.addActionListener(e -> {
                 HashMap<String, BasePanelImpl> apps = Controller.Apps.elements();
@@ -71,7 +71,7 @@ public class ButtonMgr {
             });
 
             // 3.富文本编辑器
-            AppButton markdownApp = new AppButton("Markdown");
+            AppButton markdownApp = new AppButton(AppEnum.Markdown);
             appBtns.add(markdownApp);
             markdownApp.addActionListener(e -> {
                 // TODO: 加载富文本编辑器面板
