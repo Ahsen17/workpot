@@ -37,9 +37,9 @@ public class Controller {
             SwingUtilities.invokeLater(() -> {
                 MainPanel mainPanel = new MainPanel();
 
-                MenuMgr menuMgr = new MenuMgr();
                 LayoutMgr layoutMgr = new LayoutMgr();
                 AppMgr appMgr = new AppMgr();
+                MenuMgr menuMgr = new MenuMgr();
 
                 layoutMgr.setMenus(menuMgr.menus());
                 appMgr.setMenus(menuMgr.menus());

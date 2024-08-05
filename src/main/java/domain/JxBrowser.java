@@ -37,7 +37,7 @@ public class JxBrowser {
     // jxbrowser 7.3+ tial key, expire on 2024-09-03
     private String LICENSE;
 
-    // jxbrowser 7.22 test key, do not use for commercial
+    // jxbrowser <7.3 test key, do not use for commercial
     private String TestLicense;
 
     private Engine engine;
@@ -116,19 +116,25 @@ public class JxBrowser {
     private void initBrowser() {
         assert engine != null;
         onlyBrowser = engine.newBrowser();
+        browserList = new ArrayList<>();
+        browserList.add(onlyBrowser);
+
         onlyBrowser.on(BrowserClosed.class, e -> {
             System.out.println("Current onlyBrowser is closed.");
         });
 //        onlyBrowser.set(CreatePopupCallback.class, params -> CreatePopupCallback.Response.suppress());  // 禁用弹出窗口
-        onlyBrowser.set(OpenPopupCallback.class, (params) -> {
-            Browser popup = params.popupBrowser();
-            // 新增标签页
-            browserList.add(popup);
-            return OpenPopupCallback.Response.proceed();
+//        onlyBrowser.set(CreatePopupCallback.class, (params) -> CreatePopupCallback.Response.create());  // 默认弹出窗口
+        onlyBrowser.set(CreatePopupCallback.class, (params) -> {
+            // WIKI: https://cloud.tencent.com/developer/ask/sof/737483
+            // 抑制弹出窗并在当前标签页跳转
+            System.out.printf("Load URL: %s\n", params.targetUrl());
+            browserLoadUrl(params.targetUrl());
+            return CreatePopupCallback.Response.suppress();
         });
-
-        browserList = new ArrayList<>();
-        browserList.add(onlyBrowser);
+//        onlyBrowser.set(OpenPopupCallback.class, (params) -> {
+//            Browser popup = params.popupBrowser();
+//            return OpenPopupCallback.Response.proceed();
+//        });
     }
 
     private void initNavigation() {
@@ -141,6 +147,7 @@ public class JxBrowser {
         proxy.config(SystemProxyConfig.newInstance());  // 使用系统默认代理
 //        proxy.config(DirectProxyConfig.newInstance());  // 使用直连代理
 //        proxy.config(AutoDetectProxyConfig.newInstance());  // 自动检测代理设置
+        proxyCustomize("", "");  // 开启默认用户代理
     }
 
     private void initAuthStore() {

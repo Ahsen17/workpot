@@ -9,6 +9,7 @@ import view.btn.AppButton;
 import view.btn.CtlButton;
 import view.btn.ExeButton;
 import view.pnl.interfaces.BasePanelImpl;
+import view.pnl.layout.OprPanel;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -51,12 +52,15 @@ public class ButtonMgr {
     }
 
     public static AppButton[] initAppMenuButton(int page) {
+        OprPanel opr = (OprPanel) Controller.Layouts.elements().get(ModuleEnum.OPR);
         ArrayList<AppButton> appBtns = new ArrayList<>(); {
             // 1.主页
-            AppButton homeApp = new AppButton("MainPane");
+            AppButton homeApp = new AppButton(AppEnum.MainPane);
             appBtns.add(homeApp);
             homeApp.addActionListener(e -> {
-                // TODO: 刷新操作面板即可
+                // 去除并刷新操作面板
+                opr.removeAll();
+                opr.updateUI();
             });
 
             // 2.浏览器
@@ -65,9 +69,9 @@ public class ButtonMgr {
             browserApp.addActionListener(e -> {
                 HashMap<String, BasePanelImpl> apps = Controller.Apps.elements();
                 BasePanelImpl browser = apps.get(AppEnum.Browser);
-                BasePanelImpl oprPnl = Controller.Layouts.elements().get(ModuleEnum.OPR);
-                oprPnl.add(browser);
-                oprPnl.updateUI();
+                opr.removeAll();
+                opr.add(browser);
+                opr.updateUI();
             });
 
             // 3.富文本编辑器
