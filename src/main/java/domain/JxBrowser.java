@@ -5,7 +5,6 @@ package domain;
 
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.CreatePopupCallback;
-import com.teamdev.jxbrowser.browser.callback.OpenPopupCallback;
 import com.teamdev.jxbrowser.browser.event.BrowserClosed;
 import com.teamdev.jxbrowser.engine.*;
 import com.teamdev.jxbrowser.engine.event.EngineCrashed;
