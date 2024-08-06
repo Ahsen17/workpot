@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class JxBrowser {
-    private static final String CacheDir = "data/onlyBrowser";
+    private static final String CacheDir = "data/browser";
 
     // jxbrowser 7.3+ tial key, expire on 2024-09-03
     private String LICENSE;

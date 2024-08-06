@@ -15,7 +15,7 @@ import java.io.FileReader;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
-public class EngineMgr {
+public class JxEngine {
     private static final String CacheDir = "data/browser";
 
     // jxbrowser 7.3+ tial key, expire on 2024-09-03
@@ -32,7 +32,7 @@ public class EngineMgr {
 
     private Proxy proxy;
 
-    public EngineMgr() {
+    public JxEngine() {
         init();
     }
 
@@ -119,7 +119,7 @@ public class EngineMgr {
     }
 
     public void close() {
-        // TODO: stackoverflow
-        if (engine != null && !engine.isClosed()) close();
+        if (engine != null && !engine.isClosed()) engine.close();
+        System.out.println("Engine is closed.");
     }
 }

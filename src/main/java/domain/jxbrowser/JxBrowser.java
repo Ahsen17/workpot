@@ -16,8 +16,8 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BrowserMgr {
-    private final EngineMgr engineMgr;
+public class JxBrowser {
+    private final JxEngine jxEngine;
 
     private Browser browser;
 
@@ -27,8 +27,8 @@ public class BrowserMgr {
 
     private Audio audio;
 
-    public BrowserMgr(EngineMgr engineMgr) {
-        this.engineMgr = engineMgr;
+    public JxBrowser(JxEngine mgr) {
+        jxEngine = mgr;
         init();
     }
 
@@ -38,12 +38,25 @@ public class BrowserMgr {
         initAudio();
     }
 
+    public static JxBrowser newInstance(JxEngine jxEngine){
+        JxBrowser jxBrowser = new JxBrowser(jxEngine);
+        jxBrowser.init();
+        return jxBrowser;
+    }
+
+    public static JxBrowser newInstance(JxEngine jxEngine, Browser popup){
+        JxBrowser mgr = new JxBrowser(jxEngine);
+        mgr.browser = popup;
+        mgr.init();
+        return mgr;
+    }
+
     private void initBrowser() {
-        browser = engineMgr.newBrowser();
+        if (browser == null) browser = jxEngine.newBrowser();
         browserList = new ArrayList<>();
         browserList.add(browser);
 
-        browser.on(BrowserClosed.class, e-> System.out.println("Current onlyBrowser is closed."));
+        browser.on(BrowserClosed.class, e-> System.out.printf("Browser[%s] is closed.\n", browser.hashCode()));
         //        browser.set(CreatePopupCallback.class, params -> CreatePopupCallback.Response.suppress());  // 禁用弹出窗口
 //        browser.set(CreatePopupCallback.class, (params) -> CreatePopupCallback.Response.create());  // 默认弹出窗口
         browser.set(CreatePopupCallback.class, (params) -> {
@@ -65,6 +78,10 @@ public class BrowserMgr {
 
     private void initAudio() {
         audio = browser.audio();
+    }
+
+    protected Browser getBrowser() {
+        return browser;
     }
 
     public void resize(Dimension dimension) {

@@ -30,7 +30,7 @@ public class UrlInput extends JTextField {
             public void keyTyped(KeyEvent e) {
                 if (e.getKeyChar() == KeyEvent.VK_ENTER) {
                     BrowserApp browserApp = (BrowserApp) Controller.Apps.elements().get(AppEnum.Browser);
-                    browserApp.browser.browserLoadUrl(getText());
+                    browserApp.jxBrowser.loadUrl(getText());
                     browserApp.updateView();
                     setText(HTTPS);
                 }

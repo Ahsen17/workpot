@@ -3,17 +3,19 @@ package controller;
 import controller.mgrs.AppMgr;
 import db.SQLite;
 import domain.ExeMarks;
-import enums.AppEnum;
+import domain.jxbrowser.JxBrowser;
+import domain.jxbrowser.JxEngine;
 import tools.ElementRegistry;
 import view.frm.MainFrame;
 import view.frm.interfaces.BaseFrameImpl;
 import view.pnl.MainPanel;
-import view.pnl.app.BrowserApp;
 import view.pnl.interfaces.BasePanelImpl;
 import controller.mgrs.LayoutMgr;
 import controller.mgrs.MenuMgr;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Controller {
     private static final BaseFrameImpl MainFrame = new MainFrame();
@@ -25,6 +27,10 @@ public class Controller {
     public static final ElementRegistry<BasePanelImpl[]> Menus = new ElementRegistry<>();
 
     public static final ElementRegistry<BasePanelImpl> Apps = new ElementRegistry<>();
+
+    public static final JxEngine JX_ENGINE = new JxEngine();
+
+    public static final ArrayList<JxBrowser> JX_BROWSERS = new ArrayList<>();
 
     public static final ElementRegistry<String> UrlHistories = new ElementRegistry<>();
 
@@ -63,11 +69,9 @@ public class Controller {
     }
 
     public static void Exit() {
-        BrowserApp browserApp = (BrowserApp) Apps.elements().get(AppEnum.Browser);
         SwingUtilities.invokeLater(() -> {
-            browserApp.removeView();
-            browserApp.browser.closeBrowser();
-            browserApp.browser.closeEngine();
+            JX_BROWSERS.forEach(JxBrowser::close);
+            JX_ENGINE.close();
             System.exit(0);
         });
     }
