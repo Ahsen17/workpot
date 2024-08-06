@@ -4,12 +4,13 @@ import view.pnl.interfaces.BasePanelImpl;
 
 import java.awt.*;
 
-public class BrwMenu extends BasePanelImpl {
-    public BrwMenu() {
+public class Taskbar extends BasePanelImpl {
+    public Taskbar() {
         init();
     }
 
     private void init() {
-
+        setLayout(null);
+        setOpaque(false);
     }
 }
