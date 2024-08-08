@@ -20,21 +20,21 @@ import java.util.Arrays;
 public class Controller {
     private static final BaseFrameImpl MainFrame = new MainFrame();
 
-    public static final SQLite db = new SQLite("workpot");
+    public static final SQLite DB = new SQLite("workpot");
 
-    public static final ElementRegistry<BasePanelImpl> Layouts = new ElementRegistry<>();
+    public static final ElementRegistry<BasePanelImpl> LAYOUTS = new ElementRegistry<>();
 
-    public static final ElementRegistry<BasePanelImpl[]> Menus = new ElementRegistry<>();
+    public static final ElementRegistry<BasePanelImpl[]> MENUS = new ElementRegistry<>();
 
-    public static final ElementRegistry<BasePanelImpl> Apps = new ElementRegistry<>();
+    public static final ElementRegistry<BasePanelImpl> APPS = new ElementRegistry<>();
 
     public static final JxEngine JX_ENGINE = new JxEngine();
 
     public static final ArrayList<JxBrowser> JX_BROWSERS = new ArrayList<>();
 
-    public static final ElementRegistry<String> UrlHistories = new ElementRegistry<>();
+    public static final ElementRegistry<String> URL_HISTORIES = new ElementRegistry<>();
 
-    public static final ExeMarks ExeMarks = new ExeMarks();
+    public static final ExeMarks EXE_MARKS = new ExeMarks();
 
     private Controller() {}
 
@@ -70,6 +70,7 @@ public class Controller {
 
     public static void Exit() {
         SwingUtilities.invokeLater(() -> {
+            DB.close();
             JX_BROWSERS.forEach(JxBrowser::close);
             JX_ENGINE.close();
             System.exit(0);
@@ -82,15 +83,15 @@ public class Controller {
 
     public static void UpdatePanelUI() {
         // 初始化面板
-        Layouts.elements().forEach((name, layout) -> {
+        LAYOUTS.elements().forEach((name, layout) -> {
             layout.updateUI();
         });
-        Menus.elements().forEach((name, menus) -> {
+        MENUS.elements().forEach((name, menus) -> {
             for (BasePanelImpl menu : menus) {
                 menu.updateUI();
             }
         });
-        Apps.elements().forEach((name, app) -> {
+        APPS.elements().forEach((name, app) -> {
             app.updateUI();
         });
     }

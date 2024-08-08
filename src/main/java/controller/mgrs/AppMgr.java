@@ -10,7 +10,7 @@ import tools.ElementRegistry;
 import java.util.HashMap;
 
 public class AppMgr {
-    private final ElementRegistry<BasePanelImpl> registry = Controller.Apps;
+    private final ElementRegistry<BasePanelImpl> registry = Controller.APPS;
 
     public AppMgr() {
         init();

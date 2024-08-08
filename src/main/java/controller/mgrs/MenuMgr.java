@@ -13,7 +13,7 @@ import java.awt.*;
 import java.util.HashMap;
 
 public class MenuMgr {
-    private final ElementRegistry<BasePanelImpl[]> registry = Controller.Menus;
+    private final ElementRegistry<BasePanelImpl[]> registry = Controller.MENUS;
 
     public MenuMgr() {
         init();

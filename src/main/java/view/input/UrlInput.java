@@ -29,7 +29,7 @@ public class UrlInput extends JTextField {
             @Override
             public void keyTyped(KeyEvent e) {
                 if (e.getKeyChar() == KeyEvent.VK_ENTER) {
-                    BrowserApp browserApp = (BrowserApp) Controller.Apps.elements().get(AppEnum.Browser);
+                    BrowserApp browserApp = (BrowserApp) Controller.APPS.elements().get(AppEnum.Browser);
                     browserApp.jxBrowser.loadUrl(getText());
                     browserApp.updateView();
                     setText(HTTPS);
