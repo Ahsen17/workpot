@@ -15,10 +15,7 @@ import controller.mgrs.LayoutMgr;
 import controller.mgrs.MenuMgr;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 
 public class Controller {
     private static final BaseFrameImpl MainFrame = new MainFrame();
@@ -27,17 +24,17 @@ public class Controller {
 
     public static final JxEngine JX_ENGINE = new JxEngine();
 
-    public static final ElementRegistry<BasePanelImpl> LAYOUTS = new ElementRegistry<>(HashMap.class);
+    public static final ElementRegistry<BasePanelImpl> LAYOUTS = new ElementRegistry<>(Map.class);
 
-    public static final ElementRegistry<BasePanelImpl[]> MENU_LAYOUTS = new ElementRegistry<>(HashMap.class);
+    public static final ElementRegistry<BasePanelImpl[]> MENU_LAYOUTS = new ElementRegistry<>(Map.class);
 
-    public static final ElementRegistry<BasePanelImpl> APP_LAYOUTS = new ElementRegistry<>(HashMap.class);
+    public static final ElementRegistry<BasePanelImpl> APP_LAYOUTS = new ElementRegistry<>(Map.class);
 
-    public static final ElementRegistry<BaseApp> APPS = new ElementRegistry<>(LinkedList.class);
+    public static final ElementRegistry<BaseApp> APPS = new ElementRegistry<>(List.class);
 
-    public static final ElementRegistry<JxBrowser> JX_BROWSERS = new ElementRegistry<>(ArrayList.class);
+    public static final ElementRegistry<JxBrowser> JX_BROWSERS = new ElementRegistry<>(List.class);
 
-    public static final ElementRegistry<String> URL_HISTORIES = new ElementRegistry<>(HashMap.class);
+    public static final ElementRegistry<String> URL_HISTORIES = new ElementRegistry<>(Map.class);
 
     public static final ExeMarks EXE_MARKS = new ExeMarks();
 

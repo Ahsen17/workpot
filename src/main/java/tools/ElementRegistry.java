@@ -7,11 +7,9 @@ public class ElementRegistry <T> {
     private Object container;
 
     public ElementRegistry(Class<?> cClass) {
-        if (cClass.equals(HashMap.class)) {
+        if (Map.class.isAssignableFrom(cClass)) {
             container = new HashMap<String, T>();
-        } else if (cClass.equals(ArrayList.class)) {
-            container = new ArrayList<T>();
-        } else if (cClass.equals(LinkedList.class)) {
+        } else if (List.class.isAssignableFrom(cClass)) {
             container = new LinkedList<T>();
         }
     }

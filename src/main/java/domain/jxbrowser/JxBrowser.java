@@ -15,6 +15,7 @@ import java.io.File;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class JxBrowser {
     private final JxEngine jxEngine;
@@ -140,7 +141,7 @@ public class JxBrowser {
         HashMap<Integer, ElementRegistry<String>.Entry> histories = new HashMap<>();
         for (int i = 0; i < navigation.entryCount(); i++) {
             NavigationEntry entry = navigation.entryAtIndex(i);
-            histories.putIfAbsent(i, new ElementRegistry<String>(HashMap.class).newEntry(entry.title(), entry.url())); // 历史记录()
+            histories.putIfAbsent(i, new ElementRegistry<String>(Map.class).newEntry(entry.title(), entry.url())); // 历史记录()
         }
         return histories;
     }
