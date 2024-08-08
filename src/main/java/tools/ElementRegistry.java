@@ -36,11 +36,7 @@ public class ElementRegistry <T> {
         if (isMap()) Arrays.stream(kvs).forEach(kv -> ((Map<String, T>) container).putIfAbsent(kv.name, kv.ele));
     }
 
-    public void register(T ele) {
-        if (isList()) ((List<T>) container).add(ele);
-    }
-
-    public void register(T[] eles) {
+    public void register(T... eles) {
         if (isList()) ((List<T>) container).addAll(Arrays.asList(eles));
     }
 
