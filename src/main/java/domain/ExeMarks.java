@@ -3,6 +3,7 @@ package domain;
 import controller.Controller;
 import db.SQLite;
 import db.TableMgr;
+import db.interfaces.NeedStorage;
 import net.jimmc.jshortcut.JShellLink;
 
 import java.sql.Connection;
@@ -11,8 +12,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class ExeMarks {
-    private final SQLite db = new SQLite("workpot");
+public class ExeMarks implements NeedStorage {
+    private final SQLite db = Controller.DB;
 
     public ExeMarks() {
         init();
@@ -22,11 +23,9 @@ public class ExeMarks {
         initTbl();
     }
 
-    private void initTbl() {
-        if (TableMgr.exists(db, "exe")) {
-            return;
-        }
-
+    @Override
+    public void initTbl() {
+        if (TableMgr.exists(db, "exe")) return;
         String createTbl = "CREATE TABLE exe (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "folder VARCHAR(255) NOT NULL," +
