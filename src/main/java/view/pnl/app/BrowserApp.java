@@ -16,7 +16,7 @@ public class BrowserApp extends BaseApp{
     }
 
     private void init() {
-        Controller.JX_BROWSERS.add(jxBrowser);
+        Controller.JX_BROWSERS.register(jxBrowser);
         browserView = JxBrowserView.getView(jxBrowser);
         browserView.setBounds(0, 40, this.getWidth(), this.getHeight() - 40);
     }

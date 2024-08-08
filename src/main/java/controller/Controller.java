@@ -9,6 +9,7 @@ import tools.ElementRegistry;
 import view.frm.MainFrame;
 import view.frm.interfaces.BaseFrameImpl;
 import view.pnl.MainPanel;
+import view.pnl.app.BaseApp;
 import view.pnl.interfaces.BasePanelImpl;
 import controller.mgrs.LayoutMgr;
 import controller.mgrs.MenuMgr;
@@ -16,23 +17,26 @@ import controller.mgrs.MenuMgr;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class Controller {
     private static final BaseFrameImpl MainFrame = new MainFrame();
 
     public static final SQLite DB = new SQLite("workpot");
 
-    public static final ElementRegistry<BasePanelImpl> LAYOUTS = new ElementRegistry<>();
-
-    public static final ElementRegistry<BasePanelImpl[]> MENUS = new ElementRegistry<>();
-
-    public static final ElementRegistry<BasePanelImpl> APPS = new ElementRegistry<>();
-
     public static final JxEngine JX_ENGINE = new JxEngine();
 
-    public static final ArrayList<JxBrowser> JX_BROWSERS = new ArrayList<>();
+    public static final ElementRegistry<BasePanelImpl> LAYOUTS = new ElementRegistry<>(HashMap.class);
 
-    public static final ElementRegistry<String> URL_HISTORIES = new ElementRegistry<>();
+    public static final ElementRegistry<BasePanelImpl[]> MENUS = new ElementRegistry<>(HashMap.class);
+
+    public static final ElementRegistry<BasePanelImpl> APPS = new ElementRegistry<>(HashMap.class);
+
+    public static final ElementRegistry<BaseApp> APP_OPRS = new ElementRegistry<>(ArrayList.class);
+
+    public static final ElementRegistry<JxBrowser> JX_BROWSERS = new ElementRegistry<>(ArrayList.class);
+
+    public static final ElementRegistry<String> URL_HISTORIES = new ElementRegistry<>(HashMap.class);
 
     public static final ExeMarks EXE_MARKS = new ExeMarks();
 
@@ -71,7 +75,7 @@ public class Controller {
     public static void Exit() {
         SwingUtilities.invokeLater(() -> {
             DB.close();
-            JX_BROWSERS.forEach(JxBrowser::close);
+            JX_BROWSERS.array().forEach(JxBrowser::close);
             JX_ENGINE.close();
             System.exit(0);
         });
