@@ -5,22 +5,21 @@ import domain.ExeMarks;
 import enums.AppEnum;
 import enums.ModuleEnum;
 import net.jimmc.jshortcut.JShellLink;
+import tools.ElementRegistry;
 import view.btn.AppButton;
 import view.btn.BarButton;
 import view.btn.CtlButton;
 import view.btn.ExeButton;
+import view.pnl.app.BaseApp;
 import view.pnl.interfaces.BasePanelImpl;
 import view.pnl.layout.OprPanel;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Objects;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.*;
 
 public class ButtonMgr {
-    private static final ArrayList<BarButton> barButtons = new ArrayList<>();
-
     private ButtonMgr() {}
 
     private static void runExec(String exePath) {
@@ -40,11 +39,10 @@ public class ButtonMgr {
             for (int i = 0; i < exeBtns.length; i++) {
                 if (i / 10 + 1 > page) break;
                 exeBtns[i] = new ExeButton(exes.get(i).getName()); {
-                    int finalI = i;
-                    JShellLink exe = exes.get(finalI);
+                    JShellLink exe = exes.get(i);
                     String path = exe.getFolder() + "\\" + exe.getName();
-                    exeBtns[finalI].addActionListener(e -> runExec(path));
-                    exeBtns[finalI].setIcon(new ImageIcon(exes.get(finalI).getIconLocation()));
+                    exeBtns[i].addActionListener(e -> runExec(path));
+                    exeBtns[i].setIcon(new ImageIcon(exes.get(i).getIconLocation()));
                 }
 
                 exeBtns[i].setLocation(15 + (i % 10) * 135, 15);
@@ -70,7 +68,7 @@ public class ButtonMgr {
             AppButton browserApp = new AppButton(AppEnum.Browser);
             appBtns.add(browserApp);
             browserApp.addActionListener(e -> {
-                HashMap<String, BasePanelImpl> apps = Controller.APPS.elements();
+                HashMap<String, BaseApp> apps = Controller.APPS.elements();
                 BasePanelImpl browser = apps.get(AppEnum.Browser);
                 opr.removeAll();
                 opr.add(browser);
@@ -121,17 +119,23 @@ public class ButtonMgr {
         return ctlMBtns;
     }
 
-    public static void registerBarButton(BarButton barButton) {
-        barButtons.add(barButton);
-    }
-
-    public static BarButton[] initBarButtons() {
+    public static BarButton[] initTaskbarButtons() {
+        List<BarButton> barButtons = Controller.TASKBAR_BUTTONS.array();
+        OprPanel opr = (OprPanel) Controller.APP_LAYOUTS.elements().get(ModuleEnum.OPR);
         for (int i = 0; i < barButtons.size(); i++) {
-            BarButton btn = barButtons.get(i);
-//            btn.setBounds(30, 30, (btn.getWidth() + 5) * i, 0);
-            btn.setLocation((btn.getWidth() + 5) * i, 0);
-            System.out.println(btn.getText());
+            BarButton btn = barButtons.get(i); {
+                BaseApp app = Controller.APPS.array().get(i);
+                btn.setLocation((btn.getWidth() + 5) * i, 0);
+                btn.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        opr.removeAll();
+                        opr.add(app);
+                        opr.updateUI();
+                    }
+                });
+            }
         }
-        return barButtons.toArray(new BarButton[]{});
+        return barButtons.toArray(BarButton[]::new);
     }
 }

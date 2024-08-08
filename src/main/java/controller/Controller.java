@@ -6,6 +6,7 @@ import domain.ExeMarks;
 import domain.jxbrowser.JxBrowser;
 import domain.jxbrowser.JxEngine;
 import tools.ElementRegistry;
+import view.btn.BarButton;
 import view.frm.MainFrame;
 import view.frm.interfaces.BaseFrameImpl;
 import view.pnl.MainPanel;
@@ -36,6 +37,7 @@ public class Controller {
 
     public static final ElementRegistry<String> URL_HISTORIES = new ElementRegistry<>(Map.class);
 
+    public static final ElementRegistry<BarButton> TASKBAR_BUTTONS = new ElementRegistry<>(List.class);
     public static final ExeMarks EXE_MARKS = new ExeMarks();
 
     private Controller() {}
@@ -94,11 +96,15 @@ public class Controller {
         currentPanel.updateUI();
     }
 
-    public static void runApp() {
+    public static void RunApp(BaseApp app) {
         // TODO: 添加app及任务栏按钮
+        TASKBAR_BUTTONS.register(new BarButton());
+        APPS.register(app);
     }
 
-    public static void closeApp() {
-        // TODO: 销毁app及任务栏按钮
+    public static void CloseApp(int index) {
+        // 删除注册器中的索引
+        TASKBAR_BUTTONS.remove(index);
+        APPS.remove(index);
     }
 }
