@@ -28,11 +28,11 @@ public class Controller {
 
     public static final ElementRegistry<BasePanelImpl> LAYOUTS = new ElementRegistry<>(HashMap.class);
 
-    public static final ElementRegistry<BasePanelImpl[]> MENUS = new ElementRegistry<>(HashMap.class);
+    public static final ElementRegistry<BasePanelImpl[]> MENU_LAYOUTS = new ElementRegistry<>(HashMap.class);
 
-    public static final ElementRegistry<BasePanelImpl> APPS = new ElementRegistry<>(HashMap.class);
+    public static final ElementRegistry<BasePanelImpl> APP_LAYOUTS = new ElementRegistry<>(HashMap.class);
 
-    public static final ElementRegistry<BaseApp> APP_OPRS = new ElementRegistry<>(ArrayList.class);
+    public static final ElementRegistry<BaseApp> APPS = new ElementRegistry<>(ArrayList.class);
 
     public static final ElementRegistry<JxBrowser> JX_BROWSERS = new ElementRegistry<>(ArrayList.class);
 
@@ -87,17 +87,9 @@ public class Controller {
 
     public static void UpdatePanelUI() {
         // 初始化面板
-        LAYOUTS.elements().forEach((name, layout) -> {
-            layout.updateUI();
-        });
-        MENUS.elements().forEach((name, menus) -> {
-            for (BasePanelImpl menu : menus) {
-                menu.updateUI();
-            }
-        });
-        APPS.elements().forEach((name, app) -> {
-            app.updateUI();
-        });
+        LAYOUTS.elements().forEach((name, layout) -> layout.updateUI());
+        MENU_LAYOUTS.elements().forEach((name, menus) -> Arrays.stream(menus).forEach(BasePanelImpl::updateUI));
+        APP_LAYOUTS.elements().forEach((name, app) -> app.updateUI());
     }
 
     public static void UpdatePanelUI(BasePanelImpl currentPanel) {
