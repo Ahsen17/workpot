@@ -6,6 +6,7 @@ import enums.AppEnum;
 import enums.ModuleEnum;
 import net.jimmc.jshortcut.JShellLink;
 import view.btn.AppButton;
+import view.btn.BarButton;
 import view.btn.CtlButton;
 import view.btn.ExeButton;
 import view.pnl.interfaces.BasePanelImpl;
@@ -18,6 +19,8 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class ButtonMgr {
+    private static final ArrayList<BarButton> barButtons = new ArrayList<>();
+
     private ButtonMgr() {}
 
     private static void runExec(String exePath) {
@@ -31,7 +34,7 @@ public class ButtonMgr {
     }
 
     public static ExeButton[] initExeMenuButtons(int page) {
-        ExeMarks exeMarks = Controller.ExeMarks;
+        ExeMarks exeMarks = Controller.EXE_MARKS;
         ArrayList<JShellLink> exes = exeMarks.getExes(1);
         ExeButton[] exeBtns = new ExeButton[exes.size()]; {
             for (int i = 0; i < exeBtns.length; i++) {
@@ -52,7 +55,7 @@ public class ButtonMgr {
     }
 
     public static AppButton[] initAppMenuButton(int page) {
-        OprPanel opr = (OprPanel) Controller.Layouts.elements().get(ModuleEnum.OPR);
+        OprPanel opr = (OprPanel) Controller.LAYOUTS.elements().get(ModuleEnum.OPR);
         ArrayList<AppButton> appBtns = new ArrayList<>(); {
             // 1.主页
             AppButton homeApp = new AppButton(AppEnum.MainPane);
@@ -67,7 +70,7 @@ public class ButtonMgr {
             AppButton browserApp = new AppButton(AppEnum.Browser);
             appBtns.add(browserApp);
             browserApp.addActionListener(e -> {
-                HashMap<String, BasePanelImpl> apps = Controller.Apps.elements();
+                HashMap<String, BasePanelImpl> apps = Controller.APPS.elements();
                 BasePanelImpl browser = apps.get(AppEnum.Browser);
                 opr.removeAll();
                 opr.add(browser);
@@ -116,5 +119,19 @@ public class ButtonMgr {
         }
 
         return ctlMBtns;
+    }
+
+    public static void registerBarButton(BarButton barButton) {
+        barButtons.add(barButton);
+    }
+
+    public static BarButton[] initBarButtons() {
+        for (int i = 0; i < barButtons.size(); i++) {
+            BarButton btn = barButtons.get(i);
+//            btn.setBounds(30, 30, (btn.getWidth() + 5) * i, 0);
+            btn.setLocation((btn.getWidth() + 5) * i, 0);
+            System.out.println(btn.getText());
+        }
+        return barButtons.toArray(new BarButton[]{});
     }
 }
