@@ -18,6 +18,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class Controller {
     private static final BaseFrameImpl MainFrame = new MainFrame();
@@ -32,7 +33,7 @@ public class Controller {
 
     public static final ElementRegistry<BasePanelImpl> APP_LAYOUTS = new ElementRegistry<>(HashMap.class);
 
-    public static final ElementRegistry<BaseApp> APPS = new ElementRegistry<>(ArrayList.class);
+    public static final ElementRegistry<BaseApp> APPS = new ElementRegistry<>(LinkedList.class);
 
     public static final ElementRegistry<JxBrowser> JX_BROWSERS = new ElementRegistry<>(ArrayList.class);
 
@@ -94,5 +95,13 @@ public class Controller {
 
     public static void UpdatePanelUI(BasePanelImpl currentPanel) {
         currentPanel.updateUI();
+    }
+
+    public static void runApp() {
+        // TODO: 添加app及任务栏按钮
+    }
+
+    public static void closeApp() {
+        // TODO: 销毁app及任务栏按钮
     }
 }

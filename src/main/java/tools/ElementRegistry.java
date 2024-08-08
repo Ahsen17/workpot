@@ -1,14 +1,20 @@
 package tools;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 
-public class ElementRegistry<T> {
-    private HashMap<String, T> eleMap;
+public class ElementRegistry <T> {
+    private Object container;
 
-    private ArrayList<T> eleArray = new ArrayList<>();
+    public ElementRegistry(Class<?> cClass) {
+        if (cClass.equals(HashMap.class)) {
+            container = new HashMap<String, T>();
+        } else if (cClass.equals(ArrayList.class)) {
+            container = new ArrayList<T>();
+        } else if (cClass.equals(LinkedList.class)) {
+            container = new LinkedList<T>();
+        }
+    }
 
     public class Entry {
         private String name;
@@ -20,63 +26,69 @@ public class ElementRegistry<T> {
         }
     }
 
-    public ElementRegistry() {
-        eleMap = new HashMap<>();
-    }
-
-    public ElementRegistry(Class<?> cClass) {
-        if (cClass.equals(HashMap.class)) {
-            eleMap = new HashMap<>();
-        } else if (cClass.equals(ArrayList.class)) {
-            eleArray = new ArrayList<>();
-        }
-    }
-
     public Entry newEntry(String name, T ele) {
         return new Entry(name, ele);
     }
 
     public void register(String name, T ele) {
-        eleMap.putIfAbsent(name, ele);
+        if (isMap()) ((Map<String, T>) container).putIfAbsent(name, ele);
     }
 
-    @SafeVarargs
-    public final void register(Entry... kvs) {
-        for (Entry kv : kvs) {
-            if (kv.ele != null) {
-                eleMap.putIfAbsent(kv.name, kv.ele);
-            }
-        }
+    public void register(Entry... kvs) {
+        if (isMap()) Arrays.stream(kvs).forEach(kv -> ((Map<String, T>) container).putIfAbsent(kv.name, kv.ele));
     }
 
     public void register(T ele) {
-        eleArray.add(ele);
+        if (isList()) ((List<T>) container).add(ele);
     }
 
     public void register(T[] eles) {
-        eleArray.addAll(List.of(eles));
+        if (isList()) ((List<T>) container).addAll(Arrays.asList(eles));
     }
 
     public T get(String name) {
-        return elements().get(name);
+        if (isMap()) return ((Map<String, T>) container).get(name);
+        return null;
     }
 
     public T get(int index) {
-        return eleArray.get(index);
+        if (isList()) return ((List<T>) container).get(index);
+        return null;
+    }
+
+    public void remove(String name) {
+        if (isMap()) ((Map<String, T>) container).remove(name);
+    }
+
+    public void remove(int index) {
+        if (isList()) ((List<T>) container).remove(index);
     }
 
     public HashMap<String, T> elements() {
-        HashMap<String, T> tempMap = new HashMap<>();
-        eleMap.forEach(tempMap::putIfAbsent);
+        HashMap<String, T> tempMap = null;
+        if (isMap()) {
+            tempMap = new HashMap<>();
+            ((Map<String, T>) container).forEach(tempMap::putIfAbsent);
+        }
         return tempMap;
     }
 
-    public ArrayList<T> array() {
-        return new ArrayList<>(eleArray);
+    public List<T> array() {
+        if (isList()) return new ArrayList<>(((List<T>) container));
+        return null;
     }
 
     public int size() {
-        if (eleMap != null) return eleMap.size();
-        else return eleArray.size();
+        if (isList()) return ((List<T>) container).size();
+        if (isMap()) return ((Map<String, T>) container).size();
+        return 0;
+    }
+
+    private boolean isList() {
+        return container instanceof List;
+    }
+
+    private boolean isMap() {
+        return container instanceof Map;
     }
 }

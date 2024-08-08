@@ -140,7 +140,7 @@ public class JxBrowser {
         HashMap<Integer, ElementRegistry<String>.Entry> histories = new HashMap<>();
         for (int i = 0; i < navigation.entryCount(); i++) {
             NavigationEntry entry = navigation.entryAtIndex(i);
-            histories.putIfAbsent(i, new ElementRegistry<String>().newEntry(entry.title(), entry.url())); // 历史记录()
+            histories.putIfAbsent(i, new ElementRegistry<String>(HashMap.class).newEntry(entry.title(), entry.url())); // 历史记录()
         }
         return histories;
     }
