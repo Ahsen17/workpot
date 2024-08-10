@@ -31,7 +31,7 @@ public class Controller {
 
     public static final ElementRegistry<BasePanelImpl> APP_LAYOUTS = new ElementRegistry<>(Map.class);
 
-    public static final ElementRegistry<BaseApp> APPS = new ElementRegistry<>(List.class);
+    public static final ElementRegistry<BaseApp> APPS = new ElementRegistry<>(Map.class);
 
     public static final ElementRegistry<JxBrowser> JX_BROWSERS = new ElementRegistry<>(List.class);
 
@@ -90,6 +90,12 @@ public class Controller {
         LAYOUTS.elements().forEach((name, layout) -> layout.updateUI());
         MENU_LAYOUTS.elements().forEach((name, menus) -> Arrays.stream(menus).forEach(BasePanelImpl::updateUI));
         APP_LAYOUTS.elements().forEach((name, app) -> app.updateUI());
+    }
+
+    public static JxBrowser NewJxBrowser() {
+        JxBrowser jxBrowser = JxBrowser.newInstance(Controller.JX_ENGINE);
+        JX_BROWSERS.register(0, jxBrowser);
+        return jxBrowser;
     }
 
     public static void UpdatePanelUI(BasePanelImpl currentPanel) {

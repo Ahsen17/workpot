@@ -40,6 +40,10 @@ public class ElementRegistry <T> {
         if (isList()) ((List<T>) container).addAll(Arrays.asList(eles));
     }
 
+    public void register(int index, T ele) {
+        if (isList()) ((List<T>) container).add(index, ele);
+    }
+
     public T get(String name) {
         if (isMap()) return ((Map<String, T>) container).get(name);
         return null;

@@ -21,7 +21,7 @@ public class TableMgr {
                 tbls.add(res.getString(1));
             }
             if (tbls.size() != 0) {
-                tbls.stream().filter(s -> s.equals("exe")).forEach(System.out::println);
+//                tbls.stream().filter(s -> s.equals("exe")).forEach(System.out::println);
                 return true;
             }
         } catch (SQLException e) {

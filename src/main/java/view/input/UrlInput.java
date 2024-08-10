@@ -28,11 +28,14 @@ public class UrlInput extends JTextField {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
+                String url = getText();
+                if (url == null || url.isEmpty()) return;
                 if (e.getKeyChar() == KeyEvent.VK_ENTER) {
-                    BrowserApp browserApp = (BrowserApp) Controller.APP_LAYOUTS.elements().get(AppEnum.Browser);
-                    browserApp.jxBrowser.loadUrl(getText());
-                    browserApp.updateView();
                     setText(HTTPS);
+                    Controller.NewJxBrowser().loadUrl(url);
+                    BrowserApp browser = (BrowserApp) Controller.APPS.elements().get(AppEnum.Browser);
+                    browser.removeView();
+                    browser.updateView();
                 }
             }
         });

@@ -50,6 +50,6 @@ public class SQLite {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-        System.out.println("DB connection is closed.");
+        System.out.println("SQLite connection is closed.");
     }
 }

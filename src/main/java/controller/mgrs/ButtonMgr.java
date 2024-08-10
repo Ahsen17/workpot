@@ -5,13 +5,11 @@ import domain.ExeMarks;
 import enums.AppEnum;
 import enums.ModuleEnum;
 import net.jimmc.jshortcut.JShellLink;
-import tools.ElementRegistry;
 import view.btn.AppButton;
 import view.btn.BarButton;
 import view.btn.CtlButton;
 import view.btn.ExeButton;
 import view.pnl.app.BaseApp;
-import view.pnl.interfaces.BasePanelImpl;
 import view.pnl.layout.OprPanel;
 
 import javax.swing.*;
@@ -68,10 +66,8 @@ public class ButtonMgr {
             AppButton browserApp = new AppButton(AppEnum.Browser);
             appBtns.add(browserApp);
             browserApp.addActionListener(e -> {
-                HashMap<String, BaseApp> apps = Controller.APPS.elements();
-                BasePanelImpl browser = apps.get(AppEnum.Browser);
                 opr.removeAll();
-                opr.add(browser);
+                opr.add(Controller.APPS.elements().get(AppEnum.Browser));
                 opr.updateUI();
             });
 

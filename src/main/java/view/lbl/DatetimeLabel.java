@@ -23,7 +23,7 @@ public class DatetimeLabel extends BaseLabelImpl {
 
     private void setTimer() {
         final JLabel varTime = this;
-        Timer timeAction = new Timer(1000, event -> {
+        Timer timeAction = new Timer(0, event -> {
             long timeMillis = System.currentTimeMillis();
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             varTime.setText(dateFormat.format(new Date(timeMillis)));
