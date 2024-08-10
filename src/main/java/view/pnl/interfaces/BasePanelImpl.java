@@ -12,4 +12,9 @@ public abstract class BasePanelImpl extends JPanel implements BasePanel {
             super.add(comp);
         }
     }
+
+    @Override
+    public JPanel getView(){
+        return this;
+    }
 }

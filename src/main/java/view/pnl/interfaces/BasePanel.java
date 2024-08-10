@@ -1,5 +1,7 @@
 package view.pnl.interfaces;
 
-public interface BasePanel {
+import javax.swing.*;
 
+public interface BasePanel {
+	public JPanel getView();
 }
