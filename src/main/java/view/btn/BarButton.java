@@ -1,9 +1,9 @@
 package view.btn;
 
+import app.opr.AbstractApp;
 import controller.Controller;
 import enums.ModuleEnum;
 import view.btn.interfaces.CircleButtonImpl;
-import view.pnl.app.BaseApp;
 import view.pnl.layout.OprPanel;
 
 import java.awt.*;
@@ -11,7 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class BarButton extends CircleButtonImpl {
-    private BaseApp app;
+    private AbstractApp app;
 
     public BarButton() {
         init();
@@ -38,7 +38,7 @@ public class BarButton extends CircleButtonImpl {
 //        g.drawOval(0, 0, getSize().width - 1, getSize().height - 1);
 //    }
 
-    public void linkApp(BaseApp app) {
+    public void linkApp(AbstractApp app) {
         this.app = app;
         addMouseListener(new MouseAdapter() {
             @Override
@@ -53,7 +53,7 @@ public class BarButton extends CircleButtonImpl {
         });
     }
 
-    public BaseApp getApp() {
+    public AbstractApp getApp() {
         return app;
     }
 }

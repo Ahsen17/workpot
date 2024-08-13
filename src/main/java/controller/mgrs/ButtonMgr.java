@@ -1,5 +1,6 @@
 package controller.mgrs;
 
+import app.browser.Browser;
 import controller.Controller;
 import domain.ExeMarks;
 import enums.AppEnum;
@@ -9,7 +10,7 @@ import view.btn.AppButton;
 import view.btn.BarButton;
 import view.btn.CtlButton;
 import view.btn.ExeButton;
-import view.pnl.app.BaseApp;
+import app.opr.AbstractApp;
 import view.pnl.layout.OprPanel;
 
 import javax.swing.*;
@@ -51,7 +52,7 @@ public class ButtonMgr {
     }
 
     public static AppButton[] initAppMenuButton(int page) {
-        OprPanel opr = (OprPanel) Controller.LAYOUTS.elements().get(ModuleEnum.OPR);
+        OprPanel opr = (OprPanel) Controller.LAYOUTS.map().get(ModuleEnum.OPR);
         ArrayList<AppButton> appBtns = new ArrayList<>(); {
             // 1.主页
             AppButton homeApp = new AppButton(AppEnum.MainPane);
@@ -66,9 +67,8 @@ public class ButtonMgr {
             AppButton browserApp = new AppButton(AppEnum.Browser);
             appBtns.add(browserApp);
             browserApp.addActionListener(e -> {
-                opr.removeAll();
-                opr.add(Controller.APPS.elements().get(AppEnum.Browser));
-                opr.updateUI();
+                // TODO: 装载app成功，但是操作界面不显示
+                AppMgr.loadApp(new Browser());
             });
 
             // 3.富文本编辑器
@@ -116,11 +116,11 @@ public class ButtonMgr {
     }
 
     public static BarButton[] initTaskbarButtons() {
-        List<BarButton> barButtons = Controller.TASKBAR_BUTTONS.array();
-        OprPanel opr = (OprPanel) Controller.APP_LAYOUTS.elements().get(ModuleEnum.OPR);
+        List<BarButton> barButtons = Controller.TASKBAR_BUTTONS.list();
+        OprPanel opr = (OprPanel) Controller.LAYOUTS.map().get(ModuleEnum.OPR);
         for (int i = 0; i < barButtons.size(); i++) {
             BarButton btn = barButtons.get(i); {
-                BaseApp app = Controller.APPS.array().get(i);
+                AbstractApp app = Controller.APPS_ON_LOAD.list().get(i);
                 btn.setLocation((btn.getWidth() + 5) * i, 0);
                 btn.addMouseListener(new MouseAdapter() {
                     @Override

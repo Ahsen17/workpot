@@ -1,9 +1,9 @@
 package controller;
 
-import controller.mgrs.AppMgr;
+import app.opr.AbstractApp;
+import app.opr.interfaces.BaseApp;
 import db.SQLite;
 import domain.ExeMarks;
-import domain.jxbrowser.JxBrowser;
 import domain.jxbrowser.JxEngine;
 import enums.ModuleEnum;
 import tools.ElementRegistry;
@@ -11,14 +11,15 @@ import view.btn.BarButton;
 import view.frm.MainFrame;
 import view.frm.interfaces.BaseFrameImpl;
 import view.pnl.MainPanel;
-import view.pnl.app.BaseApp;
 import view.pnl.interfaces.BasePanelImpl;
 import controller.mgrs.LayoutMgr;
 import controller.mgrs.MenuMgr;
 import view.pnl.layout.OprPanel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class Controller {
     private static final BaseFrameImpl MainFrame = new MainFrame();
@@ -31,14 +32,7 @@ public class Controller {
 
     public static final ElementRegistry<BasePanelImpl[]> MENU_LAYOUTS = new ElementRegistry<>(Map.class);
 
-    public static final ElementRegistry<BasePanelImpl> APP_LAYOUTS = new ElementRegistry<>(Map.class);
-
-    // TODO: 新创建的app注册到onload，后续通过onload来控制app生命周期
-    public static final ElementRegistry<BaseApp> APPS = new ElementRegistry<>(Map.class);
-
-    public static final ElementRegistry<BaseApp> APPS_ON_LOAD = new ElementRegistry<>(List.class);
-
-    public static final ElementRegistry<JxBrowser> JX_BROWSERS = new ElementRegistry<>(List.class);
+    public static final ElementRegistry<AbstractApp> APPS_ON_LOAD = new ElementRegistry<>(List.class);
 
     public static final ElementRegistry<String> URL_HISTORIES = new ElementRegistry<>(Map.class);
 
@@ -53,11 +47,9 @@ public class Controller {
                 MainPanel mainPanel = new MainPanel();
 
                 LayoutMgr layoutMgr = new LayoutMgr();
-                AppMgr appMgr = new AppMgr();
                 MenuMgr menuMgr = new MenuMgr();
 
                 layoutMgr.setMenus(menuMgr.menus());
-                appMgr.setMenus(menuMgr.menus());
                 mainPanel.setLayouts(layoutMgr.layouts());
 
                 MainFrame.setPanel(mainPanel);
@@ -79,8 +71,8 @@ public class Controller {
 
     public static void Exit() {
         SwingUtilities.invokeLater(() -> {
+            APPS_ON_LOAD.list().forEach(BaseApp::dispose);
             DB.close();
-            JX_BROWSERS.list().forEach(JxBrowser::close);
             JX_ENGINE.close();
             System.exit(0);
         });
@@ -94,31 +86,15 @@ public class Controller {
         // 初始化面板
         LAYOUTS.map().forEach((name, layout) -> layout.updateUI());
         MENU_LAYOUTS.map().forEach((name, menus) -> Arrays.stream(menus).forEach(BasePanelImpl::updateUI));
-        APP_LAYOUTS.map().forEach((name, app) -> app.updateUI());
-    }
-
-    public static JxBrowser NewJxBrowser() {
-        JxBrowser jxBrowser = JxBrowser.newInstance(Controller.JX_ENGINE);
-        JX_BROWSERS.register(0, jxBrowser);
-        return jxBrowser;
+        LAYOUTS.map().forEach((name, app) -> app.updateUI());
     }
 
     public static void UpdatePanelUI(BasePanelImpl currentPanel) {
         currentPanel.updateUI();
     }
 
-    public static void RunApp(BaseApp app) {
-        // TODO: 添加app及任务栏按钮
-        BarButton barButton = new BarButton();
-        barButton.linkApp(app);
-        TASKBAR_BUTTONS.register(barButton);
-    }
-
-    public static void CloseApp(int index) {
-        // 删除注册器中的索引
-        BarButton barBtn = TASKBAR_BUTTONS.get(index);
+    public static Dimension GetOprSize() {
         OprPanel opr = (OprPanel) LAYOUTS.map().get(ModuleEnum.OPR);
-        opr.remove(barBtn.getApp());
-        TASKBAR_BUTTONS.remove(index);
+        return opr.getSize();
     }
 }

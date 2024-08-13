@@ -3,7 +3,6 @@ package view.lbl;
 import controller.Controller;
 import enums.AppEnum;
 import view.lbl.interfaces.BaseLabelImpl;
-import view.pnl.app.BrowserApp;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -21,17 +20,17 @@ public class UrlHistoryLabel extends BaseLabelImpl {
         setText(urlText);
     }
 
-    public void setUrlHistory(String urlText) {
-        if (urlText == null || urlText.isEmpty()) return;
-        this.urlText = urlText;
-        setText(urlText);
-        updateUI();
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                Controller.NewJxBrowser().loadUrlAndWait(urlText);
-                ((BrowserApp) Controller.APP_LAYOUTS.map().get(AppEnum.Browser)).updateView();
-            }
-        });
-    }
+//    public void setUrlHistory(String urlText) {
+//        if (urlText == null || urlText.isEmpty()) return;
+//        this.urlText = urlText;
+//        setText(urlText);
+//        updateUI();
+//        addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                Controller.NewJxBrowser().loadUrlAndWait(urlText);
+//                ((BrowserAppTmp) Controller.APP_LAYOUTS.map().get(AppEnum.Browser)).updateView();
+//            }
+//        });
+//    }
 }

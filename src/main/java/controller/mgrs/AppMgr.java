@@ -1,54 +1,31 @@
 package controller.mgrs;
 
+import app.opr.AbstractApp;
 import controller.Controller;
-import enums.AppEnum;
-import org.jetbrains.annotations.NotNull;
-import view.pnl.app.BaseApp;
-import view.pnl.app.BrowserApp;
-import view.pnl.interfaces.BasePanelImpl;
+import enums.ModuleEnum;
 import tools.ElementRegistry;
-
-import java.util.HashMap;
+import view.pnl.layout.OprPanel;
 
 public class AppMgr {
-    private final ElementRegistry<BaseApp> registry = Controller.APPS;
+    private static final ElementRegistry<AbstractApp> onload = Controller.APPS_ON_LOAD;
 
-    public AppMgr() {
-        init();
+    private static final OprPanel opr = (OprPanel) Controller.LAYOUTS.map().get(ModuleEnum.OPR);
+
+    public static void loadApp(AbstractApp app) {
+        opr.removeAll();
+        opr.add(app.getView());
+        Controller.UpdatePanelUI(opr);
+
+        onload.register(0, app);
+//        Controller.UpdatePanelUI();
     }
 
-    private void init() {
-        registerApps();
-        initGeneralCharacters();
-    }
+    public static void unloadApp(int index) {
+        AbstractApp app = onload.list().get(index);
+        opr.removeAll();
+        Controller.UpdatePanelUI(opr);
 
-    private void registerApps() {
-        BrowserApp browser;
-        // TODO: 添加历史浏览记录标签，但未显示
-        browser = (BrowserApp) LayoutMgr.initElement(null, BrowserApp.class, LabelMgr.initBrowserAppLabels());
-
-        registry.register(
-                registry.newEntry(AppEnum.Browser, browser)
-        );
-    }
-
-    private void initGeneralCharacters() {
-        registry.map().forEach((name, panel) -> {
-            panel.setLayout(null);
-        });
-    }
-
-    public void setMenus(@NotNull HashMap<String, BasePanelImpl[]> menusMap) {
-        HashMap<String, BaseApp> eleMap = registry.map();
-        eleMap.forEach((name, panel) -> {
-            if (menusMap.get(name) == null) {
-                return;
-            }
-            panel.add(menusMap.get(name));
-        });
-    }
-
-    public ElementRegistry<BaseApp> apps() {
-        return registry;
+        onload.remove(index);
+//        Controller.UpdatePanelUI();
     }
 }

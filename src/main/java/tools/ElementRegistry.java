@@ -74,6 +74,11 @@ public class ElementRegistry <T> {
         return true;
     }
 
+    public void clear() {
+        if (isMap()) ((Map<String, T>) container).clear();
+        if (isList()) ((List<T>) container).clear();
+    }
+
     public HashMap<String, T> map() {
         HashMap<String, T> tempMap = null;
         if (isMap()) {
