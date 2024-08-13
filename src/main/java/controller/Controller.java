@@ -5,6 +5,7 @@ import db.SQLite;
 import domain.ExeMarks;
 import domain.jxbrowser.JxBrowser;
 import domain.jxbrowser.JxEngine;
+import enums.ModuleEnum;
 import tools.ElementRegistry;
 import view.btn.BarButton;
 import view.frm.MainFrame;
@@ -14,6 +15,7 @@ import view.pnl.app.BaseApp;
 import view.pnl.interfaces.BasePanelImpl;
 import controller.mgrs.LayoutMgr;
 import controller.mgrs.MenuMgr;
+import view.pnl.layout.OprPanel;
 
 import javax.swing.*;
 import java.util.*;
@@ -31,7 +33,10 @@ public class Controller {
 
     public static final ElementRegistry<BasePanelImpl> APP_LAYOUTS = new ElementRegistry<>(Map.class);
 
+    // TODO: 新创建的app注册到onload，后续通过onload来控制app生命周期
     public static final ElementRegistry<BaseApp> APPS = new ElementRegistry<>(Map.class);
+
+    public static final ElementRegistry<BaseApp> APPS_ON_LOAD = new ElementRegistry<>(List.class);
 
     public static final ElementRegistry<JxBrowser> JX_BROWSERS = new ElementRegistry<>(List.class);
 
@@ -104,13 +109,16 @@ public class Controller {
 
     public static void RunApp(BaseApp app) {
         // TODO: 添加app及任务栏按钮
-        TASKBAR_BUTTONS.register(new BarButton());
-        APPS.register(app);
+        BarButton barButton = new BarButton();
+        barButton.linkApp(app);
+        TASKBAR_BUTTONS.register(barButton);
     }
 
     public static void CloseApp(int index) {
         // 删除注册器中的索引
+        BarButton barBtn = TASKBAR_BUTTONS.get(index);
+        OprPanel opr = (OprPanel) LAYOUTS.elements().get(ModuleEnum.OPR);
+        opr.remove(barBtn.getApp());
         TASKBAR_BUTTONS.remove(index);
-        APPS.remove(index);
     }
 }
