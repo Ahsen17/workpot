@@ -45,7 +45,7 @@ public class BarButton extends CircleButtonImpl {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 // TODO: 点击则更新操作面板的app
-                OprPanel opr = (OprPanel) Controller.LAYOUTS.elements().get(ModuleEnum.OPR);
+                OprPanel opr = (OprPanel) Controller.LAYOUTS.map().get(ModuleEnum.OPR);
                 opr.removeAll();
                 opr.add(app);
                 opr.updateUI();

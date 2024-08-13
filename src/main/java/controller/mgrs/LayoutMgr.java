@@ -50,7 +50,7 @@ public class LayoutMgr {
     }
 
     private void setGenerals() {
-        registry.elements().forEach((name, panel) -> {
+        registry.map().forEach((name, panel) -> {
             panel.setLayout(null);
         });
     }
@@ -71,7 +71,7 @@ public class LayoutMgr {
     }
 
     public void setMenus(@NotNull HashMap<String, BasePanelImpl[]> menusMap) {
-        HashMap<String, BasePanelImpl> eleMap = registry.elements();
+        HashMap<String, BasePanelImpl> eleMap = registry.map();
         eleMap.forEach((name, panel) -> {
             if (menusMap.get(name) == null) {
                 return;
@@ -81,6 +81,6 @@ public class LayoutMgr {
     }
 
     public HashMap<String, BasePanelImpl> layouts() {
-        return registry.elements();
+        return registry.map();
     }
 }

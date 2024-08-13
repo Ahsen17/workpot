@@ -22,7 +22,7 @@ public class BrowserApp extends BaseApp{
         index = 0;
         if (jxBrowsers.size() == 0) return;
 
-        browserView = JxBrowserView.getView(jxBrowsers.array().get(index));
+        browserView = JxBrowserView.getView(jxBrowsers.list().get(index));
         browserView.setBounds(0, 40, this.getWidth(), this.getHeight() - 40);
         add(browserView);
         updateUI();

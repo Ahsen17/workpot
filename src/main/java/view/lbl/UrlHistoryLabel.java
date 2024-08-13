@@ -1,7 +1,6 @@
 package view.lbl;
 
 import controller.Controller;
-import domain.jxbrowser.JxBrowser;
 import enums.AppEnum;
 import view.lbl.interfaces.BaseLabelImpl;
 import view.pnl.app.BrowserApp;
@@ -31,7 +30,7 @@ public class UrlHistoryLabel extends BaseLabelImpl {
             @Override
             public void mouseClicked(MouseEvent e) {
                 Controller.NewJxBrowser().loadUrlAndWait(urlText);
-                ((BrowserApp) Controller.APP_LAYOUTS.elements().get(AppEnum.Browser)).updateView();
+                ((BrowserApp) Controller.APP_LAYOUTS.map().get(AppEnum.Browser)).updateView();
             }
         });
     }

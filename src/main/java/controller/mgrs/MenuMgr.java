@@ -25,7 +25,7 @@ public class MenuMgr {
     }
 
     private void setGenerals() {
-        registry.elements().forEach((name, menus) -> {
+        registry.map().forEach((name, menus) -> {
             for (BasePanelImpl menu : menus) {
                 menu.setLayout(null);
             }
@@ -62,6 +62,6 @@ public class MenuMgr {
     }
 
     public HashMap<String, BasePanelImpl[]> menus() {
-        return registry.elements();
+        return registry.map();
     }
 }

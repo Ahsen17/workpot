@@ -33,7 +33,7 @@ public class UrlInput extends JTextField {
                 if (e.getKeyChar() == KeyEvent.VK_ENTER) {
                     setText(HTTPS);
                     Controller.NewJxBrowser().loadUrl(url);
-                    BrowserApp browser = (BrowserApp) Controller.APPS.elements().get(AppEnum.Browser);
+                    BrowserApp browser = (BrowserApp) Controller.APPS.map().get(AppEnum.Browser);
                     browser.removeView();
                     browser.updateView();
                 }

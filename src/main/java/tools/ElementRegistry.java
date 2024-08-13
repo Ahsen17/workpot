@@ -28,20 +28,28 @@ public class ElementRegistry <T> {
         return new Entry(name, ele);
     }
 
-    public void register(String name, T ele) {
-        if (isMap()) ((Map<String, T>) container).putIfAbsent(name, ele);
+    public boolean register(String name, T ele) {
+        if (!isMap()) return false;
+        ((Map<String, T>) container).putIfAbsent(name, ele);
+        return true;
     }
 
-    public void register(Entry... kvs) {
-        if (isMap()) Arrays.stream(kvs).forEach(kv -> ((Map<String, T>) container).putIfAbsent(kv.name, kv.ele));
+    public boolean register(Entry... kvs) {
+        if (!isMap()) return false;
+        Arrays.stream(kvs).forEach(kv -> ((Map<String, T>) container).putIfAbsent(kv.name, kv.ele));
+        return true;
     }
 
-    public void register(T... eles) {
-        if (isList()) ((List<T>) container).addAll(Arrays.asList(eles));
+    public boolean register(T... eles) {
+        if (!isList()) return false;
+        ((List<T>) container).addAll(Arrays.asList(eles));
+        return true;
     }
 
-    public void register(int index, T ele) {
-        if (isList()) ((List<T>) container).add(index, ele);
+    public boolean register(int index, T ele) {
+        if (!isList()) return false;
+        ((List<T>) container).add(index, ele);
+        return true;
     }
 
     public T get(String name) {
@@ -54,15 +62,19 @@ public class ElementRegistry <T> {
         return null;
     }
 
-    public void remove(String name) {
-        if (isMap()) ((Map<String, T>) container).remove(name);
+    public boolean remove(String name) {
+        if (!isMap()) return false;
+        ((Map<String, T>) container).remove(name);
+        return true;
     }
 
-    public void remove(int index) {
-        if (isList()) ((List<T>) container).remove(index);
+    public boolean remove(int index) {
+        if (!isList()) return false;
+        ((List<T>) container).remove(index);
+        return true;
     }
 
-    public HashMap<String, T> elements() {
+    public HashMap<String, T> map() {
         HashMap<String, T> tempMap = null;
         if (isMap()) {
             tempMap = new HashMap<>();
@@ -71,7 +83,7 @@ public class ElementRegistry <T> {
         return tempMap;
     }
 
-    public List<T> array() {
+    public List<T> list() {
         if (isList()) return new ArrayList<>(((List<T>) container));
         return null;
     }
@@ -82,11 +94,11 @@ public class ElementRegistry <T> {
         return 0;
     }
 
-    private boolean isList() {
+    public boolean isList() {
         return container instanceof List;
     }
 
-    private boolean isMap() {
+    public boolean isMap() {
         return container instanceof Map;
     }
 }

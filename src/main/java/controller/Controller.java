@@ -80,7 +80,7 @@ public class Controller {
     public static void Exit() {
         SwingUtilities.invokeLater(() -> {
             DB.close();
-            JX_BROWSERS.array().forEach(JxBrowser::close);
+            JX_BROWSERS.list().forEach(JxBrowser::close);
             JX_ENGINE.close();
             System.exit(0);
         });
@@ -92,9 +92,9 @@ public class Controller {
 
     public static void UpdatePanelUI() {
         // 初始化面板
-        LAYOUTS.elements().forEach((name, layout) -> layout.updateUI());
-        MENU_LAYOUTS.elements().forEach((name, menus) -> Arrays.stream(menus).forEach(BasePanelImpl::updateUI));
-        APP_LAYOUTS.elements().forEach((name, app) -> app.updateUI());
+        LAYOUTS.map().forEach((name, layout) -> layout.updateUI());
+        MENU_LAYOUTS.map().forEach((name, menus) -> Arrays.stream(menus).forEach(BasePanelImpl::updateUI));
+        APP_LAYOUTS.map().forEach((name, app) -> app.updateUI());
     }
 
     public static JxBrowser NewJxBrowser() {
@@ -117,7 +117,7 @@ public class Controller {
     public static void CloseApp(int index) {
         // 删除注册器中的索引
         BarButton barBtn = TASKBAR_BUTTONS.get(index);
-        OprPanel opr = (OprPanel) LAYOUTS.elements().get(ModuleEnum.OPR);
+        OprPanel opr = (OprPanel) LAYOUTS.map().get(ModuleEnum.OPR);
         opr.remove(barBtn.getApp());
         TASKBAR_BUTTONS.remove(index);
     }

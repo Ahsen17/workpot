@@ -3,7 +3,6 @@ package controller.mgrs;
 import controller.Controller;
 import enums.AppEnum;
 import org.jetbrains.annotations.NotNull;
-import view.lbl.UrlHistoryLabel;
 import view.pnl.app.BaseApp;
 import view.pnl.app.BrowserApp;
 import view.pnl.interfaces.BasePanelImpl;
@@ -34,13 +33,13 @@ public class AppMgr {
     }
 
     private void initGeneralCharacters() {
-        registry.elements().forEach((name, panel) -> {
+        registry.map().forEach((name, panel) -> {
             panel.setLayout(null);
         });
     }
 
     public void setMenus(@NotNull HashMap<String, BasePanelImpl[]> menusMap) {
-        HashMap<String, BaseApp> eleMap = registry.elements();
+        HashMap<String, BaseApp> eleMap = registry.map();
         eleMap.forEach((name, panel) -> {
             if (menusMap.get(name) == null) {
                 return;
