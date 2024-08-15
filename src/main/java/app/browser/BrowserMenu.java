@@ -8,6 +8,6 @@ public class BrowserMenu extends BasePanelImpl {
     }
 
     private void init() {
-
+        setLayout(null);
     }
 }

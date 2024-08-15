@@ -6,6 +6,8 @@ import controller.Controller;
 import controller.mgrs.LayoutMgr;
 import domain.jxbrowser.JxBrowser;
 import domain.jxbrowser.JxBrowserView;
+import enums.FileCharacters;
+import enums.ImageConstantPath;
 import tools.ElementRegistry;
 import view.pnl.interfaces.BasePanelImpl;
 
@@ -16,9 +18,11 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 
 public class Browser extends AbstractApp {
-    private final ElementRegistry<JxBrowser> jxBrowses = new ElementRegistry<>(List.class);
+    private static final ElementRegistry<JxBrowser> JX_BROWSERS = new ElementRegistry<>(List.class);
 
     private JxBrowser jxBrowser;
+
+    private BrowserView view;
 
     public Browser() {
         init();
@@ -28,10 +32,26 @@ public class Browser extends AbstractApp {
         jxBrowser = newJxBrowser();
     }
 
+    private void updateView() {
+        // 更新浏览器视图
+        if (view != null) remove(view);
+        view = JxBrowserView.getView(jxBrowser);
+        view.setBounds(0, 40, getWidth(), getHeight() - 40);
+        add(view);
+        updateUI();
+    }
+
     public JxBrowser newJxBrowser() {
         JxBrowser tmp = JxBrowser.newInstance(Controller.JX_ENGINE);
-        jxBrowses.register(0, tmp);
+        JX_BROWSERS.register(0, tmp);
         return tmp;
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        ImageIcon exePanelBg = new ImageIcon(ImageConstantPath.AppBgPath + "/" + "Browser"  + FileCharacters.ImageSuffix);
+        exePanelBg.paintIcon(this, g, 0, 40);
     }
 
     @Override
@@ -48,23 +68,20 @@ public class Browser extends AbstractApp {
                 if (e.getKeyChar() == KeyEvent.VK_ENTER) {
                     urlI.setText(BrowserUrlInput.HTTPS);
                     jxBrowser.loadUrl(url);
+                    updateView();
                 }
             }
         });
         BasePanelImpl browserMenu = LayoutMgr.initElement(browserMR, BrowserMenu.class, urlI);
 
-        // 浏览器视图
-        BrowserView browserView = JxBrowserView.getView(jxBrowser);
-        browserView.setBounds(0, 40, this.getWidth(), this.getHeight() - 40);
-
-        add(browserView, browserMenu);
+        add(browserMenu);
         updateUI();
         return this;
     }
 
     @Override
     public void dispose() {
-        jxBrowses.list().forEach(JxBrowser::close);
+        JX_BROWSERS.list().forEach(JxBrowser::close);
         removeAll();
     }
 }
