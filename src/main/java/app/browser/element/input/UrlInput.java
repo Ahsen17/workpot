@@ -1,12 +1,12 @@
-package app.browser;
+package app.browser.element.input;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class BrowserUrlInput extends JTextField {
+public class UrlInput extends JTextField {
     public static final String HTTPS = "https://";
 
-    public BrowserUrlInput() {
+    public UrlInput() {
         init();
     }
 

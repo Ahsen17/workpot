@@ -1,9 +1,9 @@
-package app.browser;
+package app.browser.element.menu;
 
 import view.pnl.interfaces.BasePanelImpl;
 
-public class BrowserMenu extends BasePanelImpl {
-    public BrowserMenu() {
+public class NavigationBar extends BasePanelImpl {
+    public NavigationBar() {
         init();
     }
 

@@ -1,5 +1,7 @@
 package app.browser;
 
+import app.browser.element.menu.NavigationBar;
+import app.browser.element.input.UrlInput;
 import app.opr.AbstractApp;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import controller.Controller;
@@ -8,18 +10,14 @@ import domain.jxbrowser.JxBrowser;
 import domain.jxbrowser.JxBrowserView;
 import enums.FileCharacters;
 import enums.ImageConstantPath;
-import tools.ElementRegistry;
 import view.pnl.interfaces.BasePanelImpl;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.List;
 
 public class Browser extends AbstractApp {
-    private static final ElementRegistry<JxBrowser> JX_BROWSERS = new ElementRegistry<>(List.class);
-
     private JxBrowser jxBrowser;
 
     private BrowserView view;
@@ -42,9 +40,7 @@ public class Browser extends AbstractApp {
     }
 
     public JxBrowser newJxBrowser() {
-        JxBrowser tmp = JxBrowser.newInstance(Controller.JX_ENGINE);
-        JX_BROWSERS.register(0, tmp);
-        return tmp;
+        return JxBrowser.newInstance(Controller.JX_ENGINE);
     }
 
     @Override
@@ -57,8 +53,10 @@ public class Browser extends AbstractApp {
     @Override
     public JPanel getView() {
         // 菜单
-        Rectangle browserMR = new Rectangle(0, 0, getWidth(), 40);
-        BrowserUrlInput urlI = new BrowserUrlInput();
+        Rectangle navigationMR, sideMR;
+        navigationMR = new Rectangle(0, 0, getWidth(), 40);
+
+        UrlInput urlI = new UrlInput();
         urlI.setBounds(0, 0, 400, 40);
         urlI.addKeyListener(new KeyAdapter() {
             @Override
@@ -66,22 +64,22 @@ public class Browser extends AbstractApp {
                 String url = urlI.getText();
                 if (url == null || url.isEmpty()) return;
                 if (e.getKeyChar() == KeyEvent.VK_ENTER) {
-                    urlI.setText(BrowserUrlInput.HTTPS);
-                    jxBrowser.loadUrl(url);
+                    urlI.setText(UrlInput.HTTPS);
+                    jxBrowser.loadUrlAndWait(url);
                     updateView();
                 }
             }
         });
-        BasePanelImpl browserMenu = LayoutMgr.initElement(browserMR, BrowserMenu.class, urlI);
+        BasePanelImpl navigationBar = LayoutMgr.initElement(navigationMR, NavigationBar.class, urlI);
 
-        add(browserMenu);
+        add(navigationBar);
         updateUI();
         return this;
     }
 
     @Override
     public void dispose() {
-        JX_BROWSERS.list().forEach(JxBrowser::close);
+        jxBrowser.close();
         removeAll();
     }
 }

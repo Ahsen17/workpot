@@ -7,6 +7,8 @@ import view.pnl.interfaces.BasePanelImpl;
 import javax.swing.*;
 
 public abstract class AbstractApp extends BasePanelImpl implements BaseApp {
+    protected String name = this.getClass().getSimpleName();
+
     public AbstractApp() {
         init();
     }
@@ -20,5 +22,13 @@ public abstract class AbstractApp extends BasePanelImpl implements BaseApp {
     @Override
     public JPanel getView() {
         return this;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 }
