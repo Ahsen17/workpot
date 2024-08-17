@@ -52,6 +52,11 @@ public class ElementRegistry <T> {
         return true;
     }
 
+    public int index(T ele) {
+        if (isList()) return ((List<T>) container).indexOf(ele);
+        return -1;
+    }
+
     public T get(String name) {
         if (isMap()) return ((Map<String, T>) container).get(name);
         return null;
@@ -71,6 +76,12 @@ public class ElementRegistry <T> {
     public boolean remove(int index) {
         if (!isList()) return false;
         ((List<T>) container).remove(index);
+        return true;
+    }
+
+    public boolean remove(T ele) {
+        if (!isList()) return false;
+        ((List<T>) container).remove(ele);
         return true;
     }
 
