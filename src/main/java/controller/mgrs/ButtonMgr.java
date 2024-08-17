@@ -7,15 +7,11 @@ import enums.AppEnum;
 import enums.ModuleEnum;
 import net.jimmc.jshortcut.JShellLink;
 import view.btn.AppButton;
-import view.btn.BarButton;
 import view.btn.CtlButton;
 import view.btn.ExeButton;
-import app.opr.AbstractApp;
 import view.pnl.layout.OprPanel;
 
 import javax.swing.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.*;
 
 public class ButtonMgr {
@@ -71,16 +67,7 @@ public class ButtonMgr {
                 AppMgr.loadApp(new Browser());
             });
 
-            // 3.富文本编辑器
-            AppButton markdownApp = new AppButton(AppEnum.Markdown);
-            appBtns.add(markdownApp);
-            markdownApp.addActionListener(e -> {
-                // TODO: 加载富文本编辑器面板
-            });
-
-            for (int i = 0; i < appBtns.size(); i++) {
-                appBtns.get(i).setLocation(10, 30 + 80 * i);
-            }
+            for (int i = 0; i < appBtns.size(); i++) appBtns.get(i).setLocation(10, 30 + 80 * i);
         }
 
         return appBtns.toArray(new AppButton[]{});
@@ -113,25 +100,5 @@ public class ButtonMgr {
         }
 
         return ctlMBtns;
-    }
-
-    public static BarButton[] initTaskbarButtons() {
-        List<BarButton> barButtons = Controller.TASKBAR_BUTTONS.list();
-        OprPanel opr = (OprPanel) Controller.LAYOUTS.map().get(ModuleEnum.OPR);
-        for (int i = 0; i < barButtons.size(); i++) {
-            BarButton btn = barButtons.get(i); {
-                AbstractApp app = Controller.APPS_ON_LOAD.list().get(i);
-                btn.setLocation((btn.getWidth() + 5) * i, 0);
-                btn.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        opr.removeAll();
-                        opr.add(app);
-                        opr.updateUI();
-                    }
-                });
-            }
-        }
-        return barButtons.toArray(BarButton[]::new);
     }
 }

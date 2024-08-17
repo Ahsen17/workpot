@@ -36,7 +36,6 @@ public class Controller {
 
     public static final ElementRegistry<String> URL_HISTORIES = new ElementRegistry<>(Map.class);
 
-    public static final ElementRegistry<BarButton> TASKBAR_BUTTONS = new ElementRegistry<>(List.class);
     public static final ExeMarks EXE_MARKS = new ExeMarks();
 
     private Controller() {}
@@ -87,10 +86,6 @@ public class Controller {
         LAYOUTS.map().forEach((name, layout) -> layout.updateUI());
         MENU_LAYOUTS.map().forEach((name, menus) -> Arrays.stream(menus).forEach(BasePanelImpl::updateUI));
         LAYOUTS.map().forEach((name, app) -> app.updateUI());
-    }
-
-    public static void UpdatePanelUI(BasePanelImpl currentPanel) {
-        currentPanel.updateUI();
     }
 
     public static Dimension GetOprSize() {

@@ -1,28 +1,40 @@
 package view.btn;
 
-import app.opr.AbstractApp;
 import controller.Controller;
-import enums.ModuleEnum;
+import controller.mgrs.AppMgr;
 import view.btn.interfaces.CircleButtonImpl;
-import view.pnl.layout.OprPanel;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class BarButton extends CircleButtonImpl {
-    private AbstractApp app;
-
     public BarButton() {
+        init();
+    }
+
+    public BarButton(String name) {
+        setText(name);
         init();
     }
 
     private void init() {
         setContentAreaFilled(false);
-        setSize(30,30);
+        setSize(100,30);
         setFocusPainted(false);
-        setBorder(null);
+//        setBorder(null);
         initCircle();
+
+        var btnFlag = this;
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                // 点击则更新操作面板的app
+                int index = AppMgr.TASKBAR_BUTTONS.index(btnFlag);
+                if (index >= 0) AppMgr.updateView(Controller.APPS_ON_LOAD.get(index));
+            }
+        });
     }
 
     private void initCircle() {
@@ -37,23 +49,4 @@ public class BarButton extends CircleButtonImpl {
 //        g.setColor(getForeground());
 //        g.drawOval(0, 0, getSize().width - 1, getSize().height - 1);
 //    }
-
-    public void linkApp(AbstractApp app) {
-        this.app = app;
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                // TODO: 点击则更新操作面板的app
-                OprPanel opr = (OprPanel) Controller.LAYOUTS.map().get(ModuleEnum.OPR);
-                opr.removeAll();
-                opr.add(app);
-                opr.updateUI();
-            }
-        });
-    }
-
-    public AbstractApp getApp() {
-        return app;
-    }
 }

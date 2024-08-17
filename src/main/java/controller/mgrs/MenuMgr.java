@@ -38,12 +38,13 @@ public class MenuMgr {
         ctlMR = new Rectangle(1630, 5, 140, 30);
         taskbarMR = new Rectangle(340, 5, 1010, 30);
 
-        BasePanelImpl exeM, appM, oprM, ctlM, browserM, taskbarM;
+        BasePanelImpl exeM, appM, oprM, ctlM, taskbarM;
         exeM = LayoutMgr.initElement(exeMR, ExeMenu.class, ButtonMgr.initExeMenuButtons(1));
         appM = LayoutMgr.initElement(appMR, AppMenu.class, ButtonMgr.initAppMenuButton(1));
         oprM = LayoutMgr.initElement(oprMR, OprMenu.class);
         ctlM = LayoutMgr.initElement(ctlMR, CtlMenu.class, ButtonMgr.initCtlMenuButtons());
-        taskbarM = LayoutMgr.initElement(taskbarMR, Taskbar.class);
+        taskbarM = AppMgr.getTaskbar();
+        taskbarM.setBounds(taskbarMR);
 
         registry.register(
                 registry.newEntry(ModuleEnum.EXE, new BasePanelImpl[]{exeM}),
